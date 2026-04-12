@@ -1,28 +1,47 @@
-# Payload Blank Template
+# Rotorbladet.se - Drönarnyhetssajt
 
-This template comes configured with the bare minimum to get started on anything you need.
+En nyhetsaggregator för drönarbranschen i Sverige, byggd med Next.js och Payload CMS.
 
-## Quick start
+## Översikt
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+Rotorbladet.se aggregerar drönarnyheter från Sverige och världen genom en automatiserad workflow:
+- **Raindrop.io** - Spara intressanta artiklar med ett klick
+- **Make.com** - Automation och AI-bearbetning med OpenAI
+- **Payload CMS** - Innehållshantering och API
+- **Next.js** - Modern frontend
+- **Beehiiv** - Nyhetsbrev (optional)
 
-## Quick Start - local setup
+## Snabbstart
 
-To spin up this template locally, follow these steps:
+### Förutsättningar
+- Node.js 20+
+- MongoDB (lokal eller Atlas)
+- npm eller pnpm
 
-### Clone
+### Installation
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+1. **Installera dependencies:**
+```bash
+npm install
+```
 
-### Development
+2. **Starta MongoDB:**
+```bash
+brew services start mongodb-community
+```
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+3. **Starta dev-server:**
+```bash
+npm run dev
+```
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+4. **Skapa admin-konto:**
+- Gå till http://localhost:3000/admin
+- Skapa ditt första admin-konto
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+5. **Besök hemsidan:**
+- Frontend: http://localhost:3000
+- Admin: http://localhost:3000/admin
 
 #### Docker (Optional)
 
@@ -34,23 +53,32 @@ To do so, follow these steps:
 - Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
 - Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
 
-## How it works
+## Collections
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+### Articles
+Huvudcollection för nyhetsartiklar:
+- `title` - Rubrik
+- `slug` - URL-vänlig slug
+- `summary` - Kort sammanfattning (max 500 tecken)
+- `content` - Rich text innehåll
+- `category` - Kategori (reglering, utrustning, utbildning, nyheter, affärer)
+- `tags` - Relation till Tags
+- `original_url` - Länk till originalkälla
+- `source` - Källans namn
+- `ai_processed` - Flagga om artikeln är AI-bearbetad
+- `publishedAt` - Publiceringsdatum
+- `featured_image` - Utvald bild
 
-### Collections
+### Tags
+Taggar för kategorisering:
+- `name` - Taggnamn
+- `slug` - URL-vänlig slug
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+### Media
+Bilduppladdning med automatisk resize och optimering.
 
-- #### Users (Authentication)
-
-  Users are auth-enabled collections that have access to the admin panel.
-
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
-
-- #### Media
-
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+### Users
+Admin-användare med autentisering.
 
 ### Docker
 
@@ -62,6 +90,50 @@ Alternatively, you can use [Docker](https://www.docker.com) to spin up this temp
 
 That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
 
-## Questions
+## Automation med Make.com
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+Se [MAKE_AUTOMATION.md](./MAKE_AUTOMATION.md) för detaljerad guide om hur du sätter upp:
+- Raindrop.io webhook
+- OpenAI artikel-bearbetning
+- Automatisk publicering till Payload
+- Beehiiv nyhetsbrev-integration
+
+## API Endpoints
+
+### REST API
+- **Articles:** `GET/POST /api/articles`
+- **Single Article:** `GET/PATCH/DELETE /api/articles/:id`
+- **Tags:** `GET/POST /api/tags`
+- **Media:** `GET/POST /api/media`
+
+### GraphQL
+- **Endpoint:** `POST /api/graphql`
+
+## Deployment
+
+### Vercel (Rekommenderat)
+1. Push till GitHub
+2. Importera projekt i Vercel
+3. Lägg till environment variables:
+   - `DATABASE_URL` - MongoDB Atlas connection string
+   - `PAYLOAD_SECRET` - Random secret key
+4. Deploy!
+
+### MongoDB Atlas
+1. Skapa gratis cluster på mongodb.com/cloud/atlas
+2. Skapa database user
+3. Whitelist IP (0.0.0.0/0 för Vercel)
+4. Kopiera connection string till `DATABASE_URL`
+
+## Nästa Steg
+
+1. ✅ Skapa ditt första admin-konto
+2. ✅ Lägg till några artiklar manuellt för att testa
+3. 📝 Sätt upp Make.com automation (se MAKE_AUTOMATION.md)
+4. 📧 Konfigurera Beehiiv för nyhetsbrev
+5. 🚀 Deploy till production
+
+## Support
+
+För frågor om Payload CMS: [Payload Documentation](https://payloadcms.com/docs)
+För Make.com automation: Se MAKE_AUTOMATION.md
