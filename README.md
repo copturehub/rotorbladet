@@ -111,14 +111,9 @@ Se [MAKE_AUTOMATION.md](./MAKE_AUTOMATION.md) för detaljerad guide om hur du s�
 
 ## Deployment
 
-### Vercel (Rekommenderat)
-1. Push till GitHub
-2. Importera projekt i Vercel
-3. Lägg till environment variables:
-   - `DATABASE_URL` - MongoDB Atlas connection string
-   - `PAYLOAD_SECRET` - Random secret key
-4. Deploy!
+Deploy till Vercel med ett klick. MongoDB Atlas rekommenderas för production.
 
+**Live URL:** Coming soon...
 ### MongoDB Atlas
 1. Skapa gratis cluster på mongodb.com/cloud/atlas
 2. Skapa database user
