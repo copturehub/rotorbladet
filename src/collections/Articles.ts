@@ -42,12 +42,14 @@ export const Articles: CollectionConfig = {
     {
       name: 'category',
       type: 'select',
+      defaultValue: 'nyheter',
       options: [
         { label: 'Reglering', value: 'reglering' },
         { label: 'Utrustning', value: 'utrustning' },
         { label: 'Utbildning', value: 'utbildning' },
         { label: 'Nyheter', value: 'nyheter' },
         { label: 'Affärer', value: 'affarer' },
+        { label: 'Affärer', value: 'affärer' },
       ],
     },
     {
