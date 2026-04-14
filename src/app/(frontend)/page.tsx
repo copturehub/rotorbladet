@@ -92,7 +92,7 @@ export default async function HomePage() {
                     {heroArticle.title}
                   </h2>
                   {heroArticle.summary && (
-                    <p className="text-slate-600 text-lg leading-relaxed mb-6 line-clamp-3">
+                    <p className="text-slate-600 text-lg leading-relaxed mb-6">
                       {heroArticle.summary}
                     </p>
                   )}
@@ -148,7 +148,7 @@ export default async function HomePage() {
                       {article.title}
                     </h3>
                     {article.summary && (
-                      <p className="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-4">
+                      <p className="text-slate-600 text-sm leading-relaxed mb-4">
                         {article.summary}
                       </p>
                     )}
