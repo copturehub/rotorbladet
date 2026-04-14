@@ -42,7 +42,6 @@ export const Articles: CollectionConfig = {
     {
       name: 'category',
       type: 'select',
-      required: true,
       options: [
         { label: 'Reglering', value: 'reglering' },
         { label: 'Utrustning', value: 'utrustning' },
@@ -61,6 +60,14 @@ export const Articles: CollectionConfig = {
       name: 'featured_image',
       type: 'upload',
       relationTo: 'media',
+    },
+    {
+      name: 'cover_url',
+      type: 'text',
+      label: 'Cover Image URL',
+      admin: {
+        position: 'sidebar',
+      },
     },
     {
       name: 'ai_processed',

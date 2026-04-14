@@ -11,6 +11,7 @@ export default async function HomePage() {
     collection: 'articles',
     limit: 20,
     sort: '-publishedAt',
+    overrideAccess: true,
   })
 
   return (
@@ -25,39 +26,49 @@ export default async function HomePage() {
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {articles.docs.map((article: any) => (
-            <article key={article.id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                  {article.category}
-                </span>
-                {article.publishedAt && (
-                  <time className="text-xs text-gray-500">
-                    {new Date(article.publishedAt).toLocaleDateString('sv-SE')}
-                  </time>
+            <article
+              key={article.id}
+              className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden"
+            >
+              {article.cover_url && (
+                <img
+                  src={article.cover_url}
+                  alt={article.title}
+                  className="w-full h-48 object-cover"
+                />
+              )}
+              <div className="p-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                    {article.category}
+                  </span>
+                  {article.publishedAt && (
+                    <time className="text-xs text-gray-500">
+                      {new Date(article.publishedAt).toLocaleDateString('sv-SE')}
+                    </time>
+                  )}
+                </div>
+
+                <h2 className="text-xl font-semibold mb-2 text-gray-900">
+                  <Link href={`/artikel/${article.slug}`} className="hover:text-blue-600">
+                    {article.title}
+                  </Link>
+                </h2>
+
+                {article.summary && (
+                  <p className="text-gray-600 text-sm line-clamp-3 mb-4">{article.summary}</p>
+                )}
+
+                {article.tags && article.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {article.tags.map((tag: any) => (
+                      <span key={tag.id} className="text-xs text-gray-500">
+                        #{typeof tag === 'object' ? tag.name : tag}
+                      </span>
+                    ))}
+                  </div>
                 )}
               </div>
-              
-              <h2 className="text-xl font-semibold mb-2 text-gray-900">
-                <Link href={`/artikel/${article.slug}`} className="hover:text-blue-600">
-                  {article.title}
-                </Link>
-              </h2>
-              
-              {article.summary && (
-                <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                  {article.summary}
-                </p>
-              )}
-              
-              {article.tags && article.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {article.tags.map((tag: any) => (
-                    <span key={tag.id} className="text-xs text-gray-500">
-                      #{typeof tag === 'object' ? tag.name : tag}
-                    </span>
-                  ))}
-                </div>
-              )}
             </article>
           ))}
         </div>
