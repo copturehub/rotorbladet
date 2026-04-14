@@ -29,7 +29,6 @@ export const Articles: CollectionConfig = {
     {
       name: 'content',
       type: 'richText',
-      required: true,
     },
     {
       name: 'original_url',
