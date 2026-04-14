@@ -6,6 +6,21 @@ export const Articles: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'publishedAt'],
   },
+  hooks: {
+    beforeValidate: [
+      ({ data, operation }) => {
+        if (data?.title && (operation === 'create' || !data.slug)) {
+          data.slug = data.title
+            .toLowerCase()
+            .replace(/[åä]/g, 'a')
+            .replace(/ö/g, 'o')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '')
+        }
+        return data
+      },
+    ],
+  },
   fields: [
     {
       name: 'title',

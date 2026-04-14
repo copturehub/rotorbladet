@@ -50,9 +50,14 @@ export default async function HomePage() {
                 </div>
 
                 <h2 className="text-xl font-semibold mb-2 text-gray-900">
-                  <Link href={`/artikel/${article.slug}`} className="hover:text-blue-600">
+                  <a
+                    href={article.original_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-blue-600"
+                  >
                     {article.title}
-                  </Link>
+                  </a>
                 </h2>
 
                 {article.summary && (
