@@ -14,7 +14,7 @@ export default async function HomePage() {
     overrideAccess: true,
   })
 
-  const [heroArticle, ...restArticles] = articles.docs
+  const [heroArticle, ...restArticles] = articles.docs as any[]
 
   const categoryColors: Record<string, string> = {
     reglering: 'from-red-500 to-orange-500',
@@ -53,7 +53,7 @@ export default async function HomePage() {
         {/* Hero Article */}
         {heroArticle && (
           <a
-            href={heroArticle.original_url}
+            href={heroArticle.original_url || '#'}
             target="_blank"
             rel="noopener noreferrer"
             className="block mb-12 group"
@@ -110,7 +110,7 @@ export default async function HomePage() {
             {restArticles.map((article: any) => (
               <a
                 key={article.id}
-                href={article.original_url}
+                href={article.original_url || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block break-inside-avoid group"
