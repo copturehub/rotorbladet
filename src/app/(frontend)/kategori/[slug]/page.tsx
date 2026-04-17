@@ -85,20 +85,54 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                 Beta
               </span>
             </Link>
-            <div className="flex items-center gap-6">
+            <nav className="flex items-center gap-2 sm:gap-4">
+              {/* Categories - visible on larger screens */}
+              <div className="hidden lg:flex items-center gap-1 mr-2">
+                <Link
+                  href="/kategori/reglering"
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-colors ${
+                    slug === 'reglering'
+                      ? 'text-orange-700 bg-orange-100'
+                      : 'text-slate-600 hover:text-orange-600 hover:bg-orange-50'
+                  }`}
+                >
+                  Reglering
+                </Link>
+                <Link
+                  href="/kategori/nyheter"
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-colors ${
+                    slug === 'nyheter'
+                      ? 'text-purple-700 bg-purple-100'
+                      : 'text-slate-600 hover:text-purple-600 hover:bg-purple-50'
+                  }`}
+                >
+                  Nyheter
+                </Link>
+                <Link
+                  href="/kategori/affarer"
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-colors ${
+                    slug === 'affarer'
+                      ? 'text-amber-700 bg-amber-100'
+                      : 'text-slate-600 hover:text-amber-600 hover:bg-amber-50'
+                  }`}
+                >
+                  Affärer
+                </Link>
+              </div>
+
               <Link
                 href="/prenumerera"
-                className="text-sm font-semibold text-slate-600 hover:text-slate-900"
+                className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors"
               >
                 Prenumerera
               </Link>
               <Link
                 href="/admin"
-                className="text-sm font-semibold text-slate-600 hover:text-slate-900"
+                className="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
               >
                 Admin
               </Link>
-            </div>
+            </nav>
           </div>
         </div>
       </header>

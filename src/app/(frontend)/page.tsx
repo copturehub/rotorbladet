@@ -47,7 +47,29 @@ export default async function HomePage() {
                 Beta
               </span>
             </Link>
-            <nav className="flex items-center gap-4">
+            <nav className="flex items-center gap-2 sm:gap-4">
+              {/* Categories - visible on larger screens */}
+              <div className="hidden lg:flex items-center gap-1 mr-2">
+                <Link
+                  href="/kategori/reglering"
+                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-orange-600 hover:bg-orange-50 rounded-full transition-colors"
+                >
+                  Reglering
+                </Link>
+                <Link
+                  href="/kategori/nyheter"
+                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-purple-600 hover:bg-purple-50 rounded-full transition-colors"
+                >
+                  Nyheter
+                </Link>
+                <Link
+                  href="/kategori/affarer"
+                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-amber-600 hover:bg-amber-50 rounded-full transition-colors"
+                >
+                  Affärer
+                </Link>
+              </div>
+
               <Link
                 href="/prenumerera"
                 className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors"
