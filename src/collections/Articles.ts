@@ -17,6 +17,12 @@ export const Articles: CollectionConfig = {
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-+|-+$/g, '')
         }
+        // Auto-set publishedAt on create if missing or invalid
+        if (operation === 'create' && data) {
+          if (!data.publishedAt || isNaN(new Date(data.publishedAt).getTime())) {
+            data.publishedAt = new Date().toISOString()
+          }
+        }
         // Normalize tags: accept array, comma-separated string, or array of strings
         if (data?.tags) {
           if (typeof data.tags === 'string') {
