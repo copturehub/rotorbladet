@@ -52,16 +52,28 @@ export default async function HomePage() {
               {/* Categories - visible on larger screens */}
               <div className="hidden lg:flex items-center gap-1 mr-2">
                 <Link
+                  href="/kategori/nyheter"
+                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-purple-600 hover:bg-purple-50 rounded-full transition-colors"
+                >
+                  Nyheter
+                </Link>
+                <Link
+                  href="/kategori/utrustning"
+                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-full transition-colors"
+                >
+                  Utrustning
+                </Link>
+                <Link
                   href="/kategori/reglering"
                   className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-orange-600 hover:bg-orange-50 rounded-full transition-colors"
                 >
                   Reglering
                 </Link>
                 <Link
-                  href="/kategori/nyheter"
-                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-purple-600 hover:bg-purple-50 rounded-full transition-colors"
+                  href="/kategori/utbildning"
+                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-full transition-colors"
                 >
-                  Nyheter
+                  Utbildning
                 </Link>
                 <Link
                   href="/kategori/affarer"

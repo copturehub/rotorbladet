@@ -88,36 +88,40 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             <nav className="flex items-center gap-2 sm:gap-4">
               {/* Categories - visible on larger screens */}
               <div className="hidden lg:flex items-center gap-1 mr-2">
-                <Link
-                  href="/kategori/reglering"
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-colors ${
-                    slug === 'reglering'
-                      ? 'text-orange-700 bg-orange-100'
-                      : 'text-slate-600 hover:text-orange-600 hover:bg-orange-50'
-                  }`}
-                >
-                  Reglering
-                </Link>
-                <Link
-                  href="/kategori/nyheter"
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-colors ${
-                    slug === 'nyheter'
-                      ? 'text-purple-700 bg-purple-100'
-                      : 'text-slate-600 hover:text-purple-600 hover:bg-purple-50'
-                  }`}
-                >
-                  Nyheter
-                </Link>
-                <Link
-                  href="/kategori/affarer"
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-colors ${
-                    slug === 'affarer'
-                      ? 'text-amber-700 bg-amber-100'
-                      : 'text-slate-600 hover:text-amber-600 hover:bg-amber-50'
-                  }`}
-                >
-                  Affärer
-                </Link>
+                {[
+                  { slug: 'nyheter', label: 'Nyheter', color: 'purple' },
+                  { slug: 'utrustning', label: 'Utrustning', color: 'cyan' },
+                  { slug: 'reglering', label: 'Reglering', color: 'orange' },
+                  { slug: 'utbildning', label: 'Utbildning', color: 'emerald' },
+                  { slug: 'affarer', label: 'Affärer', color: 'amber' },
+                ].map((cat) => {
+                  const isActive = slug === cat.slug
+                  const activeClasses: Record<string, string> = {
+                    purple: 'text-purple-700 bg-purple-100',
+                    cyan: 'text-cyan-700 bg-cyan-100',
+                    orange: 'text-orange-700 bg-orange-100',
+                    emerald: 'text-emerald-700 bg-emerald-100',
+                    amber: 'text-amber-700 bg-amber-100',
+                  }
+                  const hoverClasses: Record<string, string> = {
+                    purple: 'text-slate-600 hover:text-purple-600 hover:bg-purple-50',
+                    cyan: 'text-slate-600 hover:text-cyan-600 hover:bg-cyan-50',
+                    orange: 'text-slate-600 hover:text-orange-600 hover:bg-orange-50',
+                    emerald: 'text-slate-600 hover:text-emerald-600 hover:bg-emerald-50',
+                    amber: 'text-slate-600 hover:text-amber-600 hover:bg-amber-50',
+                  }
+                  return (
+                    <Link
+                      key={cat.slug}
+                      href={`/kategori/${cat.slug}`}
+                      className={`px-3 py-1.5 text-xs font-semibold rounded-full transition-colors ${
+                        isActive ? activeClasses[cat.color] : hoverClasses[cat.color]
+                      }`}
+                    >
+                      {cat.label}
+                    </Link>
+                  )
+                })}
               </div>
 
               <Link
