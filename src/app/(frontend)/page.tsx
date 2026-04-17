@@ -84,6 +84,12 @@ export default async function HomePage() {
               </div>
 
               <Link
+                href="/verktyg"
+                className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors"
+              >
+                Verktyg
+              </Link>
+              <Link
                 href="/prenumerera"
                 className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors"
               >

@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     articles: Article;
+    tools: Tool;
     tags: Tag;
     media: Media;
     subscribers: Subscriber;
@@ -82,6 +83,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    tools: ToolsSelect<false> | ToolsSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
@@ -180,22 +182,14 @@ export interface Article {
   original_url?: string | null;
   source?: string | null;
   category?: ('reglering' | 'utrustning' | 'utbildning' | 'nyheter' | 'affarer' | 'affärer') | null;
-  tags?: (string | Tag)[] | null;
+  /**
+   * Nyckelord/taggar (t.ex. "dji", "mavic-4", "eu-förbud")
+   */
+  tags?: string[] | null;
   featured_image?: (string | null) | Media;
   cover_url?: string | null;
   ai_processed?: boolean | null;
   publishedAt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags".
- */
-export interface Tag {
-  id: string;
-  name: string;
-  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -217,6 +211,44 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tools".
+ */
+export interface Tool {
+  id: string;
+  name: string;
+  slug: string;
+  url: string;
+  /**
+   * Kort beskrivning av vad tjänsten gör och varför den är användbar.
+   */
+  description?: string | null;
+  tool_category: 'kartor' | 'vader' | 'regler' | 'utbildning' | 'verktyg' | 'myndighet';
+  source?: string | null;
+  /**
+   * Nyckelord (t.ex. "lfv", "drönarkarta", "luftrum")
+   */
+  tags?: string[] | null;
+  /**
+   * Fylls i automatiskt via og:image om tomt.
+   */
+  cover_url?: string | null;
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  name: string;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Prenumeranter på nyhetsbrevet
@@ -314,6 +346,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'articles';
         value: string | Article;
+      } | null)
+    | ({
+        relationTo: 'tools';
+        value: string | Tool;
       } | null)
     | ({
         relationTo: 'tags';
@@ -415,6 +451,23 @@ export interface ArticlesSelect<T extends boolean = true> {
   cover_url?: T;
   ai_processed?: T;
   publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tools_select".
+ */
+export interface ToolsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  url?: T;
+  description?: T;
+  tool_category?: T;
+  source?: T;
+  tags?: T;
+  cover_url?: T;
+  featured?: T;
   updatedAt?: T;
   createdAt?: T;
 }

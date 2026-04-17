@@ -8,6 +8,7 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Articles } from './collections/Articles'
+import { Tools } from './collections/Tools'
 import { Tags } from './collections/Tags'
 import { Subscribers } from './collections/Subscribers'
 import { Newsletters } from './collections/Newsletters'
@@ -22,7 +23,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Articles, Tags, Media, Subscribers, Newsletters],
+  collections: [Users, Articles, Tools, Tags, Media, Subscribers, Newsletters],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
