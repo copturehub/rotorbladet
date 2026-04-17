@@ -89,18 +89,18 @@ export default async function HomePage() {
 
       {/* Hero - Newsletter First */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        {/* Decorative gradient blobs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-3xl" />
+        {/* Decorative gradient blobs - optimized for performance */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none will-change-transform">
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-500/15 rounded-full blur-2xl" />
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/15 rounded-full blur-2xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-2xl" />
         </div>
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
           <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 bg-white/10 border border-white/20 rounded-full">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
               </span>
               <span className="text-xs font-semibold text-white/90 tracking-wide uppercase">
