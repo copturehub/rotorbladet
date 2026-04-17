@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 import config from '@/payload.config'
 import Link from 'next/link'
+import NewsletterSignup from '@/components/NewsletterSignup'
 
 export const revalidate = 0
 
@@ -16,7 +17,13 @@ export default async function HomePage() {
     overrideAccess: true,
   })
 
-  const [heroArticle, ...restArticles] = articles.docs as any[]
+  const subscriberCount = await payload.count({
+    collection: 'subscribers',
+    where: { status: { equals: 'active' } },
+    overrideAccess: true,
+  })
+
+  const articleList = articles.docs as any[]
 
   const categoryColors: Record<string, string> = {
     reglering: 'from-red-500 to-orange-500',
@@ -28,163 +35,222 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-black bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent">
+            <Link href="/" className="flex items-center gap-2">
+              <span className="text-2xl font-black tracking-tight text-slate-900">
                 Rotorbladet
-              </h1>
-              <p className="text-slate-600 text-sm mt-1 font-medium">
-                Sveriges ledande nyhetssajt för drönarbranschen
-              </p>
-            </div>
-            <Link
-              href="/admin"
-              className="px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm font-medium"
-            >
-              Admin
+              </span>
+              <span className="hidden sm:inline px-2 py-0.5 text-[10px] font-bold text-slate-500 bg-slate-100 rounded-full uppercase tracking-wider">
+                Beta
+              </span>
             </Link>
+            <nav className="flex items-center gap-4">
+              <Link
+                href="/prenumerera"
+                className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors"
+              >
+                Prenumerera
+              </Link>
+              <Link
+                href="/admin"
+                className="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                Admin
+              </Link>
+            </nav>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Article */}
-        {heroArticle && (
-          <a
-            href={heroArticle.original_url || '#'}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block mb-12 group"
-          >
-            <article className="relative overflow-hidden rounded-2xl bg-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-              <div className="grid md:grid-cols-2 gap-0">
-                {heroArticle.cover_url && (
-                  <div className="relative h-64 md:h-full overflow-hidden">
-                    <img
-                      src={heroArticle.cover_url}
-                      alt={heroArticle.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  </div>
-                )}
-                <div className="p-8 md:p-12 flex flex-col justify-center">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${categoryColors[heroArticle.category] || 'from-gray-500 to-gray-600'}`}
-                    >
-                      {heroArticle.category}
-                    </span>
-                    {heroArticle.publishedAt && (
-                      <time className="text-sm text-slate-500 font-medium">
-                        {new Date(heroArticle.publishedAt).toLocaleDateString('sv-SE', {
-                          day: 'numeric',
-                          month: 'long',
-                        })}
-                      </time>
-                    )}
-                  </div>
-                  <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 leading-tight group-hover:text-slate-700 transition-colors">
-                    {heroArticle.title}
-                  </h2>
-                  {heroArticle.summary && (
-                    <p className="text-slate-600 text-lg leading-relaxed mb-6">
-                      {heroArticle.summary}
-                    </p>
-                  )}
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="text-slate-500">Källa:</span>
-                    <span className="font-semibold text-slate-700">{heroArticle.source}</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </a>
-        )}
+      {/* Hero - Newsletter First */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        {/* Decorative gradient blobs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-3xl" />
+        </div>
 
-        {/* Masonry Grid */}
-        {restArticles.length > 0 && (
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-            {restArticles.map((article: any) => (
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              <span className="text-xs font-semibold text-white/90 tracking-wide uppercase">
+                Veckans drönarnyheter direkt i inkorgen
+              </span>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-[1.05] tracking-tight">
+              Allt viktigt som händer i <br />
+              <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent">
+                drönarbranschen
+              </span>
+            </h1>
+
+            <p className="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+              Regleringar, nya drönare, affärer och utbildning. Vi bevakar branschen så du slipper.
+              Få veckans viktigaste nyheter sammanfattat på svenska.
+            </p>
+
+            <NewsletterSignup source="homepage-hero" variant="hero" />
+
+            {subscriberCount.totalDocs > 0 && (
+              <p className="mt-8 text-sm text-white/60">
+                Gå med {subscriberCount.totalDocs.toLocaleString('sv-SE')}+ andra som redan prenumererar
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Articles section */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+              Senaste nyheterna
+            </h2>
+            <p className="text-slate-600 mt-2">
+              Handplockade artiklar från hela drönarbranschen
+            </p>
+          </div>
+        </div>
+
+        {articleList.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {articleList.map((article: any) => (
               <a
                 key={article.id}
                 href={article.original_url || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block break-inside-avoid group"
+                className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-slate-300 hover:shadow-xl transition-all duration-300"
               >
-                <article className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                  {article.cover_url && (
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={article.cover_url}
-                        alt={article.title}
-                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span
-                        className={`px-2.5 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${categoryColors[article.category] || 'from-gray-500 to-gray-600'}`}
-                      >
-                        {article.category}
-                      </span>
-                      {article.publishedAt && (
-                        <time className="text-xs text-slate-500 font-medium">
-                          {new Date(article.publishedAt).toLocaleDateString('sv-SE', {
-                            day: 'numeric',
-                            month: 'short',
-                          })}
-                        </time>
-                      )}
-                    </div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug group-hover:text-slate-700 transition-colors">
-                      {article.title}
-                    </h3>
-                    {article.summary && (
-                      <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                        {article.summary}
-                      </p>
-                    )}
-                    {article.source && (
-                      <div className="flex items-center gap-2 text-xs text-slate-500">
-                        <span>Källa:</span>
-                        <span className="font-semibold">{article.source}</span>
-                      </div>
+                {article.cover_url && (
+                  <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                    <img
+                      src={article.cover_url}
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                )}
+                <div className="flex flex-col flex-1 p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span
+                      className={`px-2.5 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider bg-gradient-to-r ${
+                        categoryColors[article.category] || 'from-slate-500 to-slate-600'
+                      }`}
+                    >
+                      {article.category}
+                    </span>
+                    {article.publishedAt && (
+                      <time className="text-xs text-slate-500 font-medium">
+                        {new Date(article.publishedAt).toLocaleDateString('sv-SE', {
+                          day: 'numeric',
+                          month: 'short',
+                        })}
+                      </time>
                     )}
                   </div>
-                </article>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug group-hover:text-slate-700 transition-colors">
+                    {article.title}
+                  </h3>
+                  {article.summary && (
+                    <p className="text-slate-600 text-sm leading-relaxed mb-4 flex-1">
+                      {article.summary}
+                    </p>
+                  )}
+                  {article.source && (
+                    <div className="flex items-center gap-2 text-xs text-slate-500 pt-3 mt-auto border-t border-slate-100">
+                      <span>Källa:</span>
+                      <span className="font-semibold text-slate-700">{article.source}</span>
+                      <span className="ml-auto text-slate-400 group-hover:text-slate-900 transition-colors">
+                        Läs mer →
+                      </span>
+                    </div>
+                  )}
+                </div>
               </a>
             ))}
           </div>
-        )}
-
-        {articles.docs.length === 0 && (
+        ) : (
           <div className="text-center py-20">
-            <div className="inline-block p-8 bg-white rounded-2xl shadow-lg">
-              <p className="text-slate-600 text-lg mb-4">Inga artiklar publicerade än.</p>
-              <Link
-                href="/admin"
-                className="inline-block px-6 py-3 bg-gradient-to-r from-slate-900 to-slate-700 text-white rounded-lg hover:from-slate-800 hover:to-slate-600 transition-all font-medium"
-              >
-                Gå till admin-panelen
-              </Link>
+            <div className="inline-block p-8 bg-slate-50 rounded-2xl border border-slate-200">
+              <p className="text-slate-600 text-lg">Inga artiklar publicerade än.</p>
             </div>
           </div>
         )}
       </main>
 
+      {/* Secondary newsletter CTA */}
+      <section className="bg-slate-50 border-y border-slate-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 tracking-tight">
+            Få veckans drönarnyheter i inkorgen
+          </h2>
+          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
+            Ett mail i veckan. Noga utvalda artiklar. Ingen spam. Avregistrera när du vill.
+          </p>
+          <div className="max-w-md mx-auto">
+            <NewsletterSignup source="homepage-secondary" variant="inline" />
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="mt-20 bg-slate-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-bold mb-2">Rotorbladet.se</h2>
-          <p className="text-slate-400">Sveriges ledande nyhetssajt för drönarbranschen</p>
+      <footer className="bg-slate-900 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+              <h3 className="text-2xl font-black mb-2">Rotorbladet</h3>
+              <p className="text-slate-400 text-sm leading-relaxed">
+                Sveriges ledande nyhetssajt för drönarbranschen. Aggregerade nyheter från hela världen.
+              </p>
+            </div>
+            <div>
+              <h4 className="text-sm font-bold mb-4 uppercase tracking-wider text-slate-300">
+                Länkar
+              </h4>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link href="/" className="text-slate-400 hover:text-white transition-colors">
+                    Startsida
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/prenumerera"
+                    className="text-slate-400 hover:text-white transition-colors"
+                  >
+                    Prenumerera
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/admin" className="text-slate-400 hover:text-white transition-colors">
+                    Admin
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-sm font-bold mb-4 uppercase tracking-wider text-slate-300">
+                Nyhetsbrev
+              </h4>
+              <p className="text-slate-400 text-sm mb-4">Prenumerera på veckobrevet</p>
+              <NewsletterSignup source="footer" variant="footer" />
+            </div>
+          </div>
+          <div className="mt-12 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+            © {new Date().getFullYear()} Rotorbladet.se · Alla rättigheter reserverade
+          </div>
         </div>
       </footer>
     </div>

@@ -71,6 +71,8 @@ export interface Config {
     articles: Article;
     tags: Tag;
     media: Media;
+    subscribers: Subscriber;
+    newsletters: Newsletter;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +84,8 @@ export interface Config {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
+    newsletters: NewslettersSelect<false> | NewslettersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -129,6 +133,9 @@ export interface User {
   id: string;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -155,7 +162,7 @@ export interface Article {
   title: string;
   slug: string;
   summary?: string | null;
-  content: {
+  content?: {
     root: {
       type: string;
       children: {
@@ -169,12 +176,13 @@ export interface Article {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   original_url?: string | null;
   source?: string | null;
-  category: 'reglering' | 'utrustning' | 'utbildning' | 'nyheter' | 'affarer';
+  category?: ('reglering' | 'utrustning' | 'utbildning' | 'nyheter' | 'affarer' | 'affärer') | null;
   tags?: (string | Tag)[] | null;
   featured_image?: (string | null) | Media;
+  cover_url?: string | null;
   ai_processed?: boolean | null;
   publishedAt?: string | null;
   updatedAt: string;
@@ -209,6 +217,71 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * Prenumeranter på nyhetsbrevet
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers".
+ */
+export interface Subscriber {
+  id: string;
+  email: string;
+  status: 'active' | 'unsubscribed' | 'bounced';
+  /**
+   * Var prenumererade användaren? (t.ex. "homepage-hero")
+   */
+  source?: string | null;
+  /**
+   * Unik token för avprenumerationslänk
+   */
+  unsubscribeToken?: string | null;
+  subscribedAt?: string | null;
+  unsubscribedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Nyhetsbrev som skickas till prenumeranter
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletters".
+ */
+export interface Newsletter {
+  id: string;
+  /**
+   * Ämnesrad - det som syns i inkorgen
+   */
+  subject: string;
+  /**
+   * Förhandstext som syns i mailklienten efter ämnet (max ~100 tecken)
+   */
+  preheader?: string | null;
+  /**
+   * Valfri introduktionstext högst upp i mailet
+   */
+  introText?: string | null;
+  /**
+   * Välj artiklar att inkludera (drag för att sortera)
+   */
+  articles: (string | Article)[];
+  /**
+   * Valfri avslutningstext längst ner i mailet
+   */
+  outroText?: string | null;
+  status: 'draft' | 'scheduled' | 'sent';
+  /**
+   * När nyhetsbrevet skickades
+   */
+  sentAt?: string | null;
+  /**
+   * Antal mottagare
+   */
+  recipientCount?: number | null;
+  openCount?: number | null;
+  clickCount?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -249,6 +322,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'subscribers';
+        value: string | Subscriber;
+      } | null)
+    | ({
+        relationTo: 'newsletters';
+        value: string | Newsletter;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -299,6 +380,9 @@ export interface PayloadMigration {
 export interface UsersSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
@@ -328,6 +412,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   category?: T;
   tags?: T;
   featured_image?: T;
+  cover_url?: T;
   ai_processed?: T;
   publishedAt?: T;
   updatedAt?: T;
@@ -360,6 +445,38 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers_select".
+ */
+export interface SubscribersSelect<T extends boolean = true> {
+  email?: T;
+  status?: T;
+  source?: T;
+  unsubscribeToken?: T;
+  subscribedAt?: T;
+  unsubscribedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletters_select".
+ */
+export interface NewslettersSelect<T extends boolean = true> {
+  subject?: T;
+  preheader?: T;
+  introText?: T;
+  articles?: T;
+  outroText?: T;
+  status?: T;
+  sentAt?: T;
+  recipientCount?: T;
+  openCount?: T;
+  clickCount?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
