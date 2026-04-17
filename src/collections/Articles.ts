@@ -69,9 +69,11 @@ export const Articles: CollectionConfig = {
     },
     {
       name: 'tags',
-      type: 'relationship',
-      relationTo: 'tags',
+      type: 'text',
       hasMany: true,
+      admin: {
+        description: 'Nyckelord/taggar (t.ex. "dji", "mavic-4", "eu-förbud")',
+      },
     },
     {
       name: 'featured_image',
