@@ -17,6 +17,21 @@ export const Articles: CollectionConfig = {
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/^-+|-+$/g, '')
         }
+        // Normalize tags: accept array, comma-separated string, or array of strings
+        if (data?.tags) {
+          if (typeof data.tags === 'string') {
+            data.tags = data.tags
+              .split(',')
+              .map((t: string) => t.trim())
+              .filter(Boolean)
+          } else if (Array.isArray(data.tags)) {
+            data.tags = data.tags
+              .flatMap((t: unknown) =>
+                typeof t === 'string' ? t.split(',').map((s) => s.trim()) : [],
+              )
+              .filter(Boolean)
+          }
+        }
         return data
       },
     ],
