@@ -186,15 +186,25 @@ export default async function HomePage() {
                       {article.summary}
                     </p>
                   )}
-                  {article.source && (
-                    <div className="flex items-center gap-2 text-xs text-slate-500 pt-3 mt-auto border-t border-slate-100">
-                      <span>Källa:</span>
-                      <span className="font-semibold text-slate-700">{article.source}</span>
-                      <span className="ml-auto text-slate-400 group-hover:text-slate-900 transition-colors">
-                        Läs mer →
-                      </span>
-                    </div>
-                  )}
+                  {(() => {
+                    let source = article.source
+                    if (!source && article.original_url) {
+                      try {
+                        source = new URL(article.original_url).hostname.replace(/^www\./, '')
+                      } catch {
+                        source = null
+                      }
+                    }
+                    return source ? (
+                      <div className="flex items-center gap-2 text-xs text-slate-500 pt-3 mt-auto border-t border-slate-100">
+                        <span>Källa:</span>
+                        <span className="font-semibold text-slate-700">{source}</span>
+                        <span className="ml-auto text-slate-400 group-hover:text-slate-900 transition-colors">
+                          Läs mer →
+                        </span>
+                      </div>
+                    ) : null
+                  })()}
                 </div>
               </a>
             ))}

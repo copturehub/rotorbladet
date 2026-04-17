@@ -213,7 +213,19 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                       {article.summary}
                     </p>
                     <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                      <span className="text-xs text-slate-500">Källa: {article.source}</span>
+                      <span className="text-xs text-slate-500">
+                        Källa:{' '}
+                        {article.source ||
+                          (() => {
+                            try {
+                              return article.original_url
+                                ? new URL(article.original_url).hostname.replace(/^www\./, '')
+                                : ''
+                            } catch {
+                              return ''
+                            }
+                          })()}
+                      </span>
                       <span className="text-sm font-semibold text-blue-600 group-hover:text-blue-700 flex items-center gap-1">
                         Läs mer
                         <svg
