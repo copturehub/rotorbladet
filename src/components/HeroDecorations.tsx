@@ -220,24 +220,28 @@ function TidningDecorations() {
 
       {/* Masthead style banner */}
       <div
-        className="absolute top-0 left-0 right-0 border-b-4 border-double py-3 overflow-hidden z-10"
+        className="absolute top-0 left-0 right-0 border-b-4 border-double py-2 md:py-3 overflow-hidden z-10"
         style={{ borderColor: '#1a0f08', backgroundColor: '#faf6ed' }}
       >
         <div
-          className="flex justify-between items-center max-w-7xl mx-auto px-8 text-xs font-bold uppercase tracking-widest"
+          className="flex justify-between items-center max-w-7xl mx-auto px-3 md:px-8 text-[9px] md:text-xs font-bold uppercase tracking-widest gap-2"
           style={{ color: '#1a0f08', fontFamily: 'var(--font-accent)' }}
         >
-          <span>Etabl. 2024</span>
-          <span className="text-lg tracking-[0.3em]" style={{ fontFamily: 'var(--font-display)' }}>
-            ★ ROTORBLADETS VECKOBLAD ★
+          <span className="hidden sm:inline">Etabl. 2024</span>
+          <span
+            className="text-sm sm:text-base md:text-lg tracking-[0.2em] md:tracking-[0.3em] text-center flex-1 truncate"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
+            <span className="hidden sm:inline">★ </span>ROTORBLADETS VECKOBLAD
+            <span className="hidden sm:inline"> ★</span>
           </span>
-          <span>Nr. 42 · Pris 1 kr</span>
+          <span className="hidden sm:inline">Nr. 42</span>
         </div>
       </div>
 
       {/* News ticker */}
       <div
-        className="absolute top-14 left-0 right-0 border-b overflow-hidden py-2 z-10"
+        className="absolute top-10 md:top-14 left-0 right-0 border-b overflow-hidden py-1.5 md:py-2 z-10"
         style={{ borderColor: '#1a0f08', backgroundColor: '#f4efe6' }}
       >
         <div
