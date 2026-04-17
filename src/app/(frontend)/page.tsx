@@ -3,6 +3,7 @@ import React from 'react'
 import config from '@/payload.config'
 import Link from 'next/link'
 import NewsletterSignup from '@/components/NewsletterSignup'
+import { CategoryBadge } from '@/components/CategoryBadge'
 
 export const revalidate = 0
 
@@ -41,9 +42,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl font-black tracking-tight text-slate-900">
-                Rotorbladet
-              </span>
+              <span className="text-2xl font-black tracking-tight text-slate-900">Rotorbladet</span>
               <span className="hidden sm:inline px-2 py-0.5 text-[10px] font-bold text-slate-500 bg-slate-100 rounded-full uppercase tracking-wider">
                 Beta
               </span>
@@ -103,7 +102,8 @@ export default async function HomePage() {
 
             {subscriberCount.totalDocs > 0 && (
               <p className="mt-8 text-sm text-white/60">
-                Gå med {subscriberCount.totalDocs.toLocaleString('sv-SE')}+ andra som redan prenumererar
+                Gå med {subscriberCount.totalDocs.toLocaleString('sv-SE')}+ andra som redan
+                prenumererar
               </p>
             )}
           </div>
@@ -117,9 +117,7 @@ export default async function HomePage() {
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
               Senaste nyheterna
             </h2>
-            <p className="text-slate-600 mt-2">
-              Handplockade artiklar från hela drönarbranschen
-            </p>
+            <p className="text-slate-600 mt-2">Handplockade artiklar från hela drönarbranschen</p>
           </div>
         </div>
 
@@ -144,13 +142,7 @@ export default async function HomePage() {
                 )}
                 <div className="flex flex-col flex-1 p-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <span
-                      className={`px-2.5 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider bg-gradient-to-r ${
-                        categoryColors[article.category] || 'from-slate-500 to-slate-600'
-                      }`}
-                    >
-                      {article.category}
-                    </span>
+                    <CategoryBadge category={article.category} categoryColors={categoryColors} />
                     {article.publishedAt && (
                       <time className="text-xs text-slate-500 font-medium">
                         {new Date(article.publishedAt).toLocaleDateString('sv-SE', {
@@ -212,7 +204,8 @@ export default async function HomePage() {
             <div>
               <h3 className="text-2xl font-black mb-2">Rotorbladet</h3>
               <p className="text-slate-400 text-sm leading-relaxed">
-                Sveriges ledande nyhetssajt för drönarbranschen. Aggregerade nyheter från hela världen.
+                Sveriges ledande nyhetssajt för drönarbranschen. Aggregerade nyheter från hela
+                världen.
               </p>
             </div>
             <div>
