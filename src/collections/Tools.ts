@@ -7,6 +7,9 @@ export const Tools: CollectionConfig = {
     defaultColumns: ['name', 'tool_category', 'source', 'createdAt'],
     group: 'Innehåll',
   },
+  access: {
+    read: () => true,
+  },
   hooks: {
     beforeValidate: [
       ({ data, operation }) => {
@@ -43,8 +46,7 @@ export const Tools: CollectionConfig = {
             const timeout = setTimeout(() => controller.abort(), 6000)
             const res = await fetch(data.url, {
               headers: {
-                'User-Agent':
-                  'Mozilla/5.0 (compatible; Rotorbladet/1.0; +https://rotorbladet.se)',
+                'User-Agent': 'Mozilla/5.0 (compatible; Rotorbladet/1.0; +https://rotorbladet.se)',
                 Accept: 'text/html',
               },
               signal: controller.signal,

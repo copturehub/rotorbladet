@@ -6,6 +6,9 @@ export const Articles: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'publishedAt'],
   },
+  access: {
+    read: () => true,
+  },
   hooks: {
     beforeValidate: [
       ({ data, operation }) => {

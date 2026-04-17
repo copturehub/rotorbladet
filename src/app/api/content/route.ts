@@ -9,18 +9,14 @@ import config from '@payload-config'
  * Auth: Requires Authorization header matching CONTENT_INGEST_TOKEN env var.
  */
 export async function POST(req: NextRequest) {
-  // Auth
-  const authHeader = req.headers.get('authorization') || ''
+  // Optional auth: if CONTENT_INGEST_TOKEN env var is set, require it
   const expectedToken = process.env.CONTENT_INGEST_TOKEN
-  if (!expectedToken) {
-    return NextResponse.json(
-      { error: 'Server misconfigured: CONTENT_INGEST_TOKEN not set' },
-      { status: 500 },
-    )
-  }
-  const provided = authHeader.replace(/^Bearer\s+/i, '').trim()
-  if (provided !== expectedToken) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (expectedToken) {
+    const authHeader = req.headers.get('authorization') || ''
+    const provided = authHeader.replace(/^Bearer\s+/i, '').trim()
+    if (provided !== expectedToken) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
   }
 
   let body: Record<string, unknown>
