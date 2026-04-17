@@ -863,38 +863,63 @@ html:not([data-theme]) .masonry-item:hover {
    CATEGORY BADGE PER THEME
    ============================================ */
 
-/* Tidning: flat color, serif, no rounded - newspaper section tag */
+/* Tidning: Red ink stamp look - classic newspaper kicker */
 [data-theme="tidning"] .category-badge {
-  background: var(--color-border) !important;
+  background: transparent !important;
   background-image: none !important;
-  color: var(--color-surface) !important;
+  color: #8b1a1a !important;
   border-radius: 0 !important;
-  font-family: var(--font-accent) !important;
-  letter-spacing: 0.2em !important;
-  padding: 3px 10px !important;
-  border-left: 3px solid var(--color-accent);
+  border: 2px double #8b1a1a !important;
+  font-family: var(--font-display) !important;
+  font-weight: 900 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.25em !important;
+  padding: 3px 10px 2px !important;
+  text-transform: uppercase;
+  transform: rotate(-1.5deg);
+  display: inline-block;
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgba(139, 26, 26, 0.1);
 }
 
+[data-theme="tidning"] .category-badge::before {
+  content: "★";
+  margin-right: 6px;
+  font-size: 8px;
+  vertical-align: middle;
+}
+
+[data-theme="tidning"] .category-badge:hover {
+  transform: rotate(0deg);
+  background: rgba(139, 26, 26, 0.05) !important;
+}
+
+/* Per-category tint variations - all use red-ink aesthetic but slightly different hues */
 [data-theme="tidning"] .category-badge[data-category="reglering"] {
-  background: var(--color-reglering) !important;
-  border-left-color: #4a0f0f;
+  color: #8b1a1a !important;
+  border-color: #8b1a1a !important;
+  transform: rotate(-2deg);
 }
 [data-theme="tidning"] .category-badge[data-category="utrustning"] {
-  background: var(--color-utrustning) !important;
-  border-left-color: #1a3a2a;
+  color: #1a3a2a !important;
+  border-color: #1a3a2a !important;
+  transform: rotate(1deg);
 }
 [data-theme="tidning"] .category-badge[data-category="utbildning"] {
-  background: #6b4423 !important;
-  border-left-color: #3a2010;
+  color: #3a2010 !important;
+  border-color: #3a2010 !important;
+  transform: rotate(-1deg);
 }
 [data-theme="tidning"] .category-badge[data-category="nyheter"] {
-  background: var(--color-nyheter) !important;
-  border-left-color: #0a1a2e;
+  color: #0a1a2e !important;
+  border-color: #0a1a2e !important;
+  transform: rotate(1.5deg);
 }
 [data-theme="tidning"] .category-badge[data-category="affarer"],
 [data-theme="tidning"] .category-badge[data-category="affärer"] {
-  background: var(--color-affarer) !important;
-  border-left-color: #2a1a0a;
+  color: #6b4423 !important;
+  border-color: #6b4423 !important;
+  transform: rotate(-0.5deg);
 }
 
 /* Blueprint: mono, bracketed, like a tech label */
