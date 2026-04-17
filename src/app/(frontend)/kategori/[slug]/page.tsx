@@ -170,21 +170,21 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         {/* Articles Grid */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {articles.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="masonry-grid columns-1 md:columns-2 lg:columns-3 gap-6">
               {articles.map((article: any) => (
                 <a
                   key={article.id}
                   href={article.original_url || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-slate-300 hover:shadow-xl transition-all duration-300"
+                  className="masonry-item group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-slate-300 hover:shadow-xl transition-all duration-300 break-inside-avoid mb-6"
                 >
                   {article.cover_url && (
-                    <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                    <div className="relative overflow-hidden bg-slate-100">
                       <img
                         src={article.cover_url}
                         alt={article.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                   )}

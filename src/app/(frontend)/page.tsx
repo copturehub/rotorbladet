@@ -4,6 +4,7 @@ import config from '@/payload.config'
 import Link from 'next/link'
 import NewsletterSignup from '@/components/NewsletterSignup'
 import { CategoryBadge } from '@/components/CategoryBadge'
+import { HeroDecorations } from '@/components/HeroDecorations'
 
 export const revalidate = 0
 
@@ -88,9 +89,12 @@ export default async function HomePage() {
       </header>
 
       {/* Hero - Newsletter First */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        {/* Decorative gradient blobs - optimized for performance */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none will-change-transform">
+      <section className="hero-section relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        {/* Theme-specific decorations */}
+        <HeroDecorations />
+
+        {/* Default gradient blobs (shown only on modern theme) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none will-change-transform modern-blobs">
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-500/15 rounded-full blur-2xl" />
           <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/15 rounded-full blur-2xl" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-2xl" />
@@ -144,21 +148,21 @@ export default async function HomePage() {
         </div>
 
         {articleList.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="masonry-grid columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
             {articleList.map((article: any) => (
               <a
                 key={article.id}
                 href={article.original_url || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-slate-300 hover:shadow-xl transition-all duration-300"
+                className="masonry-item group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-slate-300 hover:shadow-xl transition-all duration-300 break-inside-avoid mb-6"
               >
                 {article.cover_url && (
-                  <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                  <div className="relative overflow-hidden bg-slate-100">
                     <img
                       src={article.cover_url}
                       alt={article.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
                 )}
