@@ -859,6 +859,122 @@ html:not([data-theme]) .masonry-item:hover {
   transform: translateY(-4px);
 }
 
+/* ============================================
+   CATEGORY BADGE PER THEME
+   ============================================ */
+
+/* Tidning: flat color, serif, no rounded - newspaper section tag */
+[data-theme="tidning"] .category-badge {
+  background: var(--color-border) !important;
+  background-image: none !important;
+  color: var(--color-surface) !important;
+  border-radius: 0 !important;
+  font-family: var(--font-accent) !important;
+  letter-spacing: 0.2em !important;
+  padding: 3px 10px !important;
+  border-left: 3px solid var(--color-accent);
+}
+
+[data-theme="tidning"] .category-badge[data-category="reglering"] {
+  background: var(--color-reglering) !important;
+  border-left-color: #4a0f0f;
+}
+[data-theme="tidning"] .category-badge[data-category="utrustning"] {
+  background: var(--color-utrustning) !important;
+  border-left-color: #1a3a2a;
+}
+[data-theme="tidning"] .category-badge[data-category="utbildning"] {
+  background: #6b4423 !important;
+  border-left-color: #3a2010;
+}
+[data-theme="tidning"] .category-badge[data-category="nyheter"] {
+  background: var(--color-nyheter) !important;
+  border-left-color: #0a1a2e;
+}
+[data-theme="tidning"] .category-badge[data-category="affarer"],
+[data-theme="tidning"] .category-badge[data-category="affärer"] {
+  background: var(--color-affarer) !important;
+  border-left-color: #2a1a0a;
+}
+
+/* Blueprint: mono, bracketed, like a tech label */
+[data-theme="blueprint"] .category-badge {
+  background: transparent !important;
+  background-image: none !important;
+  color: var(--color-accent) !important;
+  border: 1px dashed var(--color-accent) !important;
+  border-radius: 2px !important;
+  font-family: var(--font-mono) !important;
+  letter-spacing: 0.15em !important;
+  padding: 2px 8px !important;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+[data-theme="blueprint"] .category-badge::before {
+  content: "[ ";
+  opacity: 0.7;
+}
+[data-theme="blueprint"] .category-badge::after {
+  content: " ]";
+  opacity: 0.7;
+}
+
+[data-theme="blueprint"] .category-badge[data-category="reglering"] {
+  color: #ff6b6b !important;
+  border-color: #ff6b6b !important;
+}
+[data-theme="blueprint"] .category-badge[data-category="utrustning"] {
+  color: #4db8ff !important;
+  border-color: #4db8ff !important;
+}
+[data-theme="blueprint"] .category-badge[data-category="utbildning"] {
+  color: #4dd4a0 !important;
+  border-color: #4dd4a0 !important;
+}
+[data-theme="blueprint"] .category-badge[data-category="affarer"],
+[data-theme="blueprint"] .category-badge[data-category="affärer"] {
+  color: #ffb347 !important;
+  border-color: #ffb347 !important;
+}
+
+/* Wired: chunky, offset shadow, no rounded, skewed */
+[data-theme="wired"] .category-badge {
+  background: var(--color-accent) !important;
+  background-image: none !important;
+  color: var(--color-text-inverse) !important;
+  border: 2px solid var(--color-border) !important;
+  border-radius: 0 !important;
+  font-family: var(--font-accent) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.1em !important;
+  padding: 3px 10px !important;
+  box-shadow: 3px 3px 0 var(--color-border);
+  transform: skewX(-8deg);
+  display: inline-block;
+}
+
+[data-theme="wired"] .category-badge[data-category="reglering"] {
+  background: #ff0099 !important;
+  color: #ffffff !important;
+}
+[data-theme="wired"] .category-badge[data-category="utrustning"] {
+  background: #00ccff !important;
+  color: #1a0033 !important;
+}
+[data-theme="wired"] .category-badge[data-category="utbildning"] {
+  background: #00ff88 !important;
+  color: #1a0033 !important;
+}
+[data-theme="wired"] .category-badge[data-category="nyheter"] {
+  background: #ffcc00 !important;
+  color: #1a0033 !important;
+}
+[data-theme="wired"] .category-badge[data-category="affarer"],
+[data-theme="wired"] .category-badge[data-category="affärer"] {
+  background: #ff6600 !important;
+  color: #ffffff !important;
+}
+
 /* Section heading per theme */
 [data-theme="tidning"] main h2 {
   border-top: 3px double var(--color-border);

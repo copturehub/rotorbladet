@@ -17,7 +17,8 @@ export function CategoryBadge({ category, categoryColors }: CategoryBadgeProps) 
   return (
     <span
       onClick={handleClick}
-      className={`px-2.5 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider bg-gradient-to-r ${
+      data-category={category}
+      className={`category-badge px-2.5 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider bg-gradient-to-r ${
         categoryColors[category] || 'from-slate-500 to-slate-600'
       } cursor-pointer hover:opacity-80 transition-opacity`}
     >

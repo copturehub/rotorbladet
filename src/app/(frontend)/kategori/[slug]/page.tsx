@@ -195,7 +195,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   <div className="flex flex-col flex-1 p-6">
                     <div className="flex items-center gap-2 mb-3">
                       <span
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider bg-gradient-to-r ${
+                        data-category={article.category}
+                        className={`category-badge px-2.5 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider bg-gradient-to-r ${
                           categoryColors[article.category] || 'from-slate-500 to-slate-600'
                         }`}
                       >
