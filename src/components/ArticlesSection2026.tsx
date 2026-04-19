@@ -99,41 +99,37 @@ export function ArticlesSection({
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* 2. NEWSLETTER HERO */}
-        <section
-          className="mb-8 rounded-2xl overflow-hidden relative"
-          style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)' }}
-        >
+        <section className="mb-8 rounded-2xl overflow-hidden relative bg-emerald-600">
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(135deg, #059669 0%, #0284c7 100%)' }}
+          />
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl" />
+            <div className="absolute -top-10 -right-10 w-64 h-64 bg-white/10 rounded-full" />
+            <div className="absolute -bottom-16 -left-8 w-56 h-56 bg-black/10 rounded-full" />
+            <div className="absolute top-1/2 right-1/4 w-32 h-32 bg-white/5 rounded-full" />
           </div>
-          <div className="relative px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row items-center gap-6">
+          <div className="relative px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1 text-center md:text-left">
-              <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+              <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-white/20 border border-white/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                <span className="text-[11px] font-black text-white uppercase tracking-widest">
                   Gratis nyhetsbrev
                 </span>
               </div>
-              <h2 className="text-2xl md:text-4xl font-black text-white mb-3 leading-tight">
-                Håll dig uppdaterad 🚀
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-2 leading-tight">
+                Missa inget �‍🗨
               </h2>
-              <p className="text-slate-300 text-sm md:text-base max-w-md mb-4">
-                Veckans viktigaste drönarnyheter — regleringar, teknik, affärer. Noga utvalda.
-                Direkt i inkorgen.
+              <p className="text-white/80 text-sm md:text-base max-w-sm mb-3">
+                Veckans drönarnyheter — direkt i inkorgen. Gratis.
               </p>
-              <div className="flex items-center gap-4 text-xs text-slate-500">
-                <span className="flex items-center gap-1">✓ Gratis</span>
-                <span className="flex items-center gap-1">✓ En gång i veckan</span>
-                <span className="flex items-center gap-1">✓ Avregistrera när du vill</span>
-              </div>
               {subscriberCount > 0 && (
-                <p className="mt-3 text-xs text-emerald-500 font-semibold">
-                  🙌 {subscriberCount}+ läsare prenumererar redan
+                <p className="text-white/70 text-xs font-semibold">
+                  ⭐ {subscriberCount}+ prenumeranter
                 </p>
               )}
             </div>
-            <div className="w-full md:w-72 flex-shrink-0 min-w-0">
+            <div className="w-full md:w-80 flex-shrink-0">
               <NewsletterSignup source="articles-hero" variant="hero" />
             </div>
           </div>

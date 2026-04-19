@@ -56,26 +56,26 @@ export default function NewsletterSignup({
             onChange={(e) => setEmail(e.target.value)}
             placeholder="din@email.se"
             disabled={status === 'loading'}
-            className="flex-1 min-w-0 w-0 px-3 py-2.5 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 text-sm backdrop-blur-sm"
+            className="flex-1 min-w-0 w-0 px-4 py-3 bg-white rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-white/50 text-sm font-medium shadow-sm"
           />
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="flex-shrink-0 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold text-sm transition-all disabled:opacity-50 whitespace-nowrap"
+            className="flex-shrink-0 px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-black text-sm transition-all disabled:opacity-50 whitespace-nowrap shadow-sm"
           >
-            {status === 'loading' ? '...' : 'Skicka'}
+            {status === 'loading' ? '...' : 'Prenumerera →'}
           </button>
         </div>
         {message && (
           <p
             className={`mt-2 text-xs font-medium ${
-              status === 'success' ? 'text-emerald-400' : 'text-red-400'
+              status === 'success' ? 'text-white' : 'text-red-400'
             }`}
           >
             {message}
           </p>
         )}
-        <p className="mt-2 text-xs text-white/40">Kostnadsfritt. Avregistrera när du vill.</p>
+        <p className="mt-2 text-xs text-white/70">Kostnadsfritt · Avregistrera när du vill</p>
       </form>
     )
   }
