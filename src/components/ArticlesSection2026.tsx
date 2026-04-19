@@ -94,19 +94,49 @@ export function ArticlesSection({
 
   return (
     <>
-      {/* ANIMATED NEWS TICKER */}
+      {/* 1. ANIMATED NEWS TICKER */}
       <NewsTicker articles={allLoadedArticles.slice(0, 10)} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        {/* FEATURED - Hero magazine layout */}
+        {/* 2. NEWSLETTER HERO - top of content, before everything */}
+        <section className="mb-8 rounded-2xl overflow-hidden relative bg-slate-900">
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
+            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" />
+          </div>
+          <div className="relative px-6 py-8 md:px-12 md:py-10 flex flex-col md:flex-row items-center gap-8">
+            <div className="flex-1 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Nyhetsbrev</span>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">
+                Veckans drönarnyheter
+                <br />
+                <span className="text-slate-400 font-normal text-lg">direkt i inkorgen</span>
+              </h2>
+              <p className="text-slate-400 text-sm max-w-sm">
+                Regleringar, nya drönare, affärer. Noga utvalda. En gång i veckan. Gratis.
+              </p>
+              {subscriberCount > 0 && (
+                <p className="mt-2 text-xs text-slate-500">{subscriberCount}+ prenumeranter</p>
+              )}
+            </div>
+            <div className="w-full md:w-96 flex-shrink-0">
+              <NewsletterSignup source="articles-hero" variant="hero" />
+            </div>
+          </div>
+        </section>
+
+        {/* 3. FEATURED - Hero magazine layout */}
         {featuredArticles.length > 0 && (
           <section className="mb-8">
             <div className="flex items-center gap-3 mb-5">
               <span className="text-xs font-black uppercase tracking-widest text-slate-400">Utvalda</span>
               <div className="flex-1 h-px bg-slate-200" />
             </div>
-
             {featuredArticles.length === 1 ? (
               <FeaturedHeroCard article={featuredArticles[0]} categoryColors={categoryColors} trackClick={trackClick} isAdmin={isAdmin} allArticles={allLoadedArticles} tall />
             ) : featuredArticles.length === 2 ? (
@@ -133,81 +163,53 @@ export function ArticlesSection({
           </section>
         )}
 
-        {/* NEWSLETTER HERO - prominent, full width */}
-        <section className="mb-10 rounded-2xl overflow-hidden relative bg-slate-900">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" />
-          </div>
-          <div className="relative px-6 py-10 md:px-12 md:py-12 flex flex-col md:flex-row items-center gap-8">
-            <div className="flex-1 text-center md:text-left">
-              <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Nyhetsbrev</span>
+        {/* 4. TRENDING - horizontal numbered strip (uses recent articles as fallback) */}
+        {(() => {
+          const trendList = trendingArticles.length >= 3 ? trendingArticles : allLoadedArticles.slice(0, 5)
+          return trendList.length > 0 ? (
+            <section className="mb-8">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-xs font-black uppercase tracking-widest text-slate-400">🔥 Hett just nu</span>
+                <div className="flex-1 h-px bg-slate-200" />
               </div>
-              <h2 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">
-                Veckans drönarnyheter<br />
-                <span className="text-slate-400 font-normal text-lg">direkt i inkorgen</span>
-              </h2>
-              <p className="text-slate-400 text-sm max-w-sm">
-                Regleringar, nya drönare, affärer. Noga utvalda. En gång i veckan. Gratis.
-              </p>
-              {subscriberCount > 0 && (
-                <p className="mt-2 text-xs text-slate-500">{subscriberCount}+ prenumeranter</p>
-              )}
-            </div>
-            <div className="w-full md:w-96 flex-shrink-0">
-              <NewsletterSignup source="articles-hero" variant="hero" />
-            </div>
-          </div>
-        </section>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                {trendList.map((article: any, i: number) => {
+                  let source = article.source
+                  if (!source && article.original_url) {
+                    try { source = new URL(article.original_url).hostname.replace(/^www\./, '') } catch { source = null }
+                  }
+                  return (
+                    <a
+                      key={article.id}
+                      href={article.original_url || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => trackClick(article.id)}
+                      className="group flex gap-3 p-3 rounded-xl border border-slate-100 hover:border-slate-300 hover:shadow-md bg-white transition-all"
+                    >
+                      <span className={`flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg text-xs font-black ${
+                        i === 0 ? 'bg-amber-400 text-white' :
+                        i === 1 ? 'bg-slate-300 text-slate-700' :
+                        i === 2 ? 'bg-orange-300 text-orange-800' :
+                        'bg-slate-100 text-slate-500'
+                      }`}>{i + 1}</span>
+                      <div className="min-w-0">
+                        <CategoryBadge category={article.category} categoryColors={categoryColors} />
+                        <p className="text-xs font-semibold text-slate-800 group-hover:text-slate-600 line-clamp-2 mt-1 leading-snug">
+                          {article.title}
+                        </p>
+                        {source && <p className="text-[10px] text-slate-400 mt-1">{source}</p>}
+                      </div>
+                    </a>
+                  )
+                })}
+              </div>
+            </section>
+          ) : null
+        })()}
 
-        {/* TRENDING - horizontal numbered strip */}
-        {trendingArticles.length > 0 && (
-          <section className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-xs font-black uppercase tracking-widest text-slate-400">🔥 Hett just nu</span>
-              <div className="flex-1 h-px bg-slate-200" />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-              {trendingArticles.map((article: any, i: number) => {
-                let source = article.source
-                if (!source && article.original_url) {
-                  try { source = new URL(article.original_url).hostname.replace(/^www\./, '') } catch { source = null }
-                }
-                return (
-                  <a
-                    key={article.id}
-                    href={article.original_url || '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => trackClick(article.id)}
-                    className="group flex gap-3 p-3 rounded-xl border border-slate-100 hover:border-slate-300 hover:shadow-md bg-white transition-all"
-                  >
-                    <span className={`flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg text-xs font-black ${
-                      i === 0 ? 'bg-amber-400 text-white' :
-                      i === 1 ? 'bg-slate-300 text-slate-700' :
-                      i === 2 ? 'bg-orange-300 text-orange-800' :
-                      'bg-slate-100 text-slate-500'
-                    }`}>{i + 1}</span>
-                    <div className="min-w-0">
-                      <CategoryBadge category={article.category} categoryColors={categoryColors} />
-                      <p className="text-xs font-semibold text-slate-800 group-hover:text-slate-600 line-clamp-2 mt-1 leading-snug">
-                        {article.title}
-                      </p>
-                      {source && <p className="text-[10px] text-slate-400 mt-1">{source}</p>}
-                    </div>
-                  </a>
-                )
-              })}
-            </div>
-          </section>
-        )}
-
-        {/* ARTICLES SECTION - full width */}
+        {/* 5. ARTICLES - full width 3-col grid */}
         <section>
-          {/* Header row */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
             <h2 className="text-2xl font-black text-slate-900 tracking-tight">Senaste nyheterna</h2>
             <SearchBar
@@ -219,7 +221,6 @@ export function ArticlesSection({
             />
           </div>
 
-          {/* Category filter pills */}
           <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
             <button
               onClick={() => {
