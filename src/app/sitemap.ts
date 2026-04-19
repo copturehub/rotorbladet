@@ -2,7 +2,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import type { MetadataRoute } from 'next'
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rotorbladet.se'
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://rotorbladet.se'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payloadConfig = await config
