@@ -56,14 +56,14 @@ export default function NewsletterSignup({
             onChange={(e) => setEmail(e.target.value)}
             placeholder="din@email.se"
             disabled={status === 'loading'}
-            className="flex-1 min-w-0 w-0 px-4 py-3 bg-white rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-white/50 text-sm font-medium shadow-sm"
+            className="flex-1 min-w-0 px-5 py-3.5 bg-white rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-white/50 text-sm font-medium shadow-sm"
           />
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="flex-shrink-0 px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-black text-sm transition-all disabled:opacity-50 whitespace-nowrap shadow-sm"
+            className="flex-shrink-0 px-6 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-black text-sm transition-all disabled:opacity-50 whitespace-nowrap shadow-sm"
           >
-            {status === 'loading' ? '...' : 'Prenumerera →'}
+            {status === 'loading' ? '...' : 'Prenumerera'}
           </button>
         </div>
         {message && (

@@ -135,7 +135,7 @@ export function ArticlesSection({
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-white mb-2 leading-tight">
-                Aldrig missa en nyhet
+                Håll dig uppdaterad
               </h2>
               <p className="text-white/85 text-sm md:text-base max-w-sm mb-4">
                 Veckans viktigaste drönarnyheter — varje fredag direkt i inkorgen.
@@ -160,7 +160,7 @@ export function ArticlesSection({
                 </p>
               )}
             </div>
-            <div className="w-full md:w-80 flex-shrink-0">
+            <div className="w-full md:w-[420px] flex-shrink-0">
               <NewsletterSignup source="articles-hero" variant="hero" />
             </div>
           </div>
@@ -408,12 +408,17 @@ export function ArticlesSection({
                       >
                         <div className="relative overflow-hidden bg-slate-100">
                           {article.cover_url ? (
-                            <div className={`relative w-full ${
-                              idx % 7 === 0 ? 'h-64' :
-                              idx % 5 === 0 ? 'h-52' :
-                              idx % 3 === 0 ? 'h-48' :
-                              'h-40'
-                            }`}>
+                            <div
+                              className={`relative w-full ${
+                                idx % 7 === 0
+                                  ? 'h-64'
+                                  : idx % 5 === 0
+                                    ? 'h-52'
+                                    : idx % 3 === 0
+                                      ? 'h-48'
+                                      : 'h-40'
+                              }`}
+                            >
                               <Image
                                 src={article.cover_url}
                                 alt={article.title}
