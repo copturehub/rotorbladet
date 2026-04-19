@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { CategoryBadge } from '@/components/CategoryBadge'
 import { SearchBar } from '@/components/SearchBar'
 import { RelatedArticlesPreview } from '@/components/RelatedArticlesPreview'
@@ -37,13 +38,29 @@ export function ArticlesSection({
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [readArticles, setReadArticles] = useState<Set<string>>(new Set())
+  const [bookmarked, setBookmarked] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     try {
       const stored = JSON.parse(localStorage.getItem('rb-read') || '[]')
       setReadArticles(new Set(stored))
+      const bm = JSON.parse(localStorage.getItem('rb-bookmarks') || '[]')
+      setBookmarked(new Set(bm))
     } catch {}
   }, [])
+
+  const toggleBookmark = (id: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setBookmarked((prev) => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      try {
+        localStorage.setItem('rb-bookmarks', JSON.stringify([...next]))
+      } catch {}
+      return next
+    })
+  }
 
   const markAsRead = (id: string) => {
     setReadArticles((prev) => {
@@ -391,11 +408,16 @@ export function ArticlesSection({
                       >
                         <div className="relative overflow-hidden bg-slate-100">
                           {article.cover_url ? (
-                            <img
-                              src={article.cover_url}
-                              alt={article.title}
-                              className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
+                            <div className="relative w-full h-40">
+                              <Image
+                                src={article.cover_url}
+                                alt={article.title}
+                                fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                loading="lazy"
+                              />
+                            </div>
                           ) : (
                             <div className="w-full h-28 flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
                               <svg
@@ -469,10 +491,35 @@ export function ArticlesSection({
                         </div>
                       </a>
                       <div
-                        className="flex items-center justify-between px-4 pb-3"
+                        className="flex items-center justify-between px-3 pb-3"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <ShareButton url={article.original_url || ''} title={article.title} />
+                        <div className="flex items-center gap-1">
+                          <ShareButton url={article.original_url || ''} title={article.title} />
+                          <button
+                            onClick={(e) => toggleBookmark(article.id, e)}
+                            className={`p-1.5 rounded-lg transition-colors text-xs ${
+                              bookmarked.has(article.id)
+                                ? 'text-amber-500 bg-amber-50'
+                                : 'text-slate-400 hover:text-amber-500 hover:bg-amber-50'
+                            }`}
+                            title={bookmarked.has(article.id) ? 'Ta bort bokmärke' : 'Spara'}
+                          >
+                            <svg
+                              className="w-4 h-4"
+                              fill={bookmarked.has(article.id) ? 'currentColor' : 'none'}
+                              stroke="currentColor"
+                              strokeWidth={2}
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                              />
+                            </svg>
+                          </button>
+                        </div>
                         <RelatedArticlesPreview
                           article={article}
                           allArticles={allLoadedArticles}
