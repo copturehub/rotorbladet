@@ -111,9 +111,27 @@ Se [MAKE_AUTOMATION.md](./MAKE_AUTOMATION.md) för detaljerad guide om hur du s�
 
 ## Deployment
 
-Deploy till Vercel med ett klick. MongoDB Atlas rekommenderas för production.
+Projektet deployas automatiskt via **Vercel** kopplat till GitHub-repot `copturehub/rotorbladet`.
 
-**Live URL:** Coming soon...
+### Så här deployas
+
+```bash
+git add .
+git commit -m "beskrivning av ändring"
+git push origin main
+```
+
+Vercel triggar automatiskt en ny deploy vid push till `main`. Ingen manuell deploy krävs.
+
+**Live URLs:**
+- Production: https://rotorbladet.se
+- Preview: https://rotorbladet.vercel.app
+
+### Miljövariabler i Vercel
+Sätts under Project Settings → Environment Variables:
+- `DATABASE_URL` - MongoDB Atlas connection string
+- `PAYLOAD_SECRET` - Hemlig nyckel för Payload CMS
+
 ### MongoDB Atlas
 1. Skapa gratis cluster på mongodb.com/cloud/atlas
 2. Skapa database user

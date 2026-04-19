@@ -13,6 +13,15 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="sv" data-theme="modern" suppressHydrationWarning>
       <head>
+        {/* PWA Manifest */}
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+        <link rel="icon" href="/favicon.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="theme-color" content="#6366f1" />
+        <meta name="mobile-web-app-capable" content="yes" />
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -26,6 +35,22 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
                 const t = localStorage.getItem('rotorbladet-theme') || 'modern';
                 document.documentElement.setAttribute('data-theme', t);
               } catch(e) {}
+            `,
+          }}
+        />
+        <script defer data-domain="rotorbladet.se" src="https://plausible.io/js/script.js" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                  navigator.serviceWorker.register('/sw.js').then((registration) => {
+                    console.log('SW registered:', registration);
+                  }).catch((error) => {
+                    console.log('SW registration failed:', error);
+                  });
+                });
+              }
             `,
           }}
         />

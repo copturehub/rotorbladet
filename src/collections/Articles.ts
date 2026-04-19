@@ -166,6 +166,24 @@ export const Articles: CollectionConfig = {
       },
     },
     {
+      name: 'featured',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Utvald artikel',
+      admin: {
+        position: 'sidebar',
+        description: 'Visa denna artikel i utvald-sektionen på startsidan',
+      },
+    },
+    {
+      name: 'clickCount',
+      type: 'number',
+      defaultValue: 0,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'publishedAt',
       type: 'date',
       admin: {

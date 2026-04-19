@@ -3,8 +3,8 @@ import React from 'react'
 import config from '@/payload.config'
 import Link from 'next/link'
 import NewsletterSignup from '@/components/NewsletterSignup'
-import { CategoryBadge } from '@/components/CategoryBadge'
 import { HeroDecorations } from '@/components/HeroDecorations'
+import { ArticlesSection } from '@/components/ArticlesSection'
 
 export const revalidate = 0
 
@@ -16,6 +16,22 @@ export default async function HomePage() {
     collection: 'articles',
     limit: 20,
     sort: '-publishedAt',
+    overrideAccess: true,
+  })
+
+  const featuredArticles = await payload.find({
+    collection: 'articles',
+    where: { featured: { equals: true } },
+    limit: 3,
+    sort: '-publishedAt',
+    overrideAccess: true,
+  })
+
+  const trendingArticles = await payload.find({
+    collection: 'articles',
+    where: { clickCount: { greater_than: 0 } },
+    limit: 5,
+    sort: '-clickCount',
     overrideAccess: true,
   })
 
@@ -43,6 +59,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
+              <img src="/logo.png" alt="Rotorbladet" className="h-8 w-auto" />
               <span className="text-2xl font-black tracking-tight text-slate-900">Rotorbladet</span>
               <span className="hidden sm:inline px-2 py-0.5 text-[10px] font-bold text-slate-500 bg-slate-100 rounded-full uppercase tracking-wider">
                 Beta
@@ -155,86 +172,12 @@ export default async function HomePage() {
       </section>
 
       {/* Articles section */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-              Senaste nyheterna
-            </h2>
-            <p className="text-slate-600 mt-2">Handplockade artiklar från hela drönarbranschen</p>
-          </div>
-        </div>
-
-        {articleList.length > 0 ? (
-          <div className="masonry-grid columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-            {articleList.map((article: any) => (
-              <a
-                key={article.id}
-                href={article.original_url || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="masonry-item group flex flex-col bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-slate-300 hover:shadow-xl transition-all duration-300 break-inside-avoid mb-6"
-              >
-                {article.cover_url && (
-                  <div className="relative overflow-hidden bg-slate-100">
-                    <img
-                      src={article.cover_url}
-                      alt={article.title}
-                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                )}
-                <div className="flex flex-col flex-1 p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <CategoryBadge category={article.category} categoryColors={categoryColors} />
-                    {article.publishedAt && (
-                      <time className="text-xs text-slate-500 font-medium">
-                        {new Date(article.publishedAt).toLocaleDateString('sv-SE', {
-                          day: 'numeric',
-                          month: 'short',
-                        })}
-                      </time>
-                    )}
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug group-hover:text-slate-700 transition-colors">
-                    {article.title}
-                  </h3>
-                  {article.summary && (
-                    <p className="text-slate-600 text-sm leading-relaxed mb-4 flex-1">
-                      {article.summary}
-                    </p>
-                  )}
-                  {(() => {
-                    let source = article.source
-                    if (!source && article.original_url) {
-                      try {
-                        source = new URL(article.original_url).hostname.replace(/^www\./, '')
-                      } catch {
-                        source = null
-                      }
-                    }
-                    return source ? (
-                      <div className="flex items-center gap-2 text-xs text-slate-500 pt-3 mt-auto border-t border-slate-100">
-                        <span>Källa:</span>
-                        <span className="font-semibold text-slate-700">{source}</span>
-                        <span className="ml-auto text-slate-400 group-hover:text-slate-900 transition-colors">
-                          Läs mer →
-                        </span>
-                      </div>
-                    ) : null
-                  })()}
-                </div>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <div className="inline-block p-8 bg-slate-50 rounded-2xl border border-slate-200">
-              <p className="text-slate-600 text-lg">Inga artiklar publicerade än.</p>
-            </div>
-          </div>
-        )}
-      </main>
+      <ArticlesSection
+        initialArticles={articleList}
+        featuredArticles={featuredArticles.docs as any[]}
+        trendingArticles={trendingArticles.docs as any[]}
+        categoryColors={categoryColors}
+      />
 
       {/* Secondary newsletter CTA */}
       <section className="bg-slate-50 border-y border-slate-200">
