@@ -2,7 +2,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import type { MetadataRoute } from 'next'
 
-const baseUrl = 'https://rotorbladet.se'
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rotorbladet.se'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payloadConfig = await config
@@ -16,12 +16,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   })
 
   const articleUrls: MetadataRoute.Sitemap = articles.docs
-    .filter((a: any) => a.slug)
+    .filter((a: any) => a.slug && a.publishedAt)
     .map((article: any) => ({
       url: `${baseUrl}/artikel/${article.slug}`,
       lastModified: article.updatedAt ? new Date(article.updatedAt) : new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: article.featured ? 0.9 : 0.7,
+      changeFrequency: 'monthly' as const,
+      priority: article.featured ? 0.9 : 0.6,
     }))
 
   const categoryUrls: MetadataRoute.Sitemap = [
@@ -37,14 +37,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }))
 
-  return [
+  const staticUrls: MetadataRoute.Sitemap = [
+    { url: baseUrl, lastModified: new Date(), changeFrequency: 'hourly', priority: 1 },
     {
-      url: baseUrl,
+      url: `${baseUrl}/prenumerera`,
       lastModified: new Date(),
-      changeFrequency: 'hourly',
-      priority: 1,
+      changeFrequency: 'monthly',
+      priority: 0.5,
     },
-    ...categoryUrls,
-    ...articleUrls,
+    {
+      url: `${baseUrl}/verktyg`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
   ]
+
+  return [...staticUrls, ...categoryUrls, ...articleUrls]
 }
