@@ -124,53 +124,24 @@ export default async function HomePage() {
         </div>
       </header>
 
-      {/* Hero - Newsletter First */}
-      <section className="hero-section relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        {/* Theme-specific decorations */}
-        <HeroDecorations />
-
-        {/* Default gradient blobs (shown only on modern theme) */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none will-change-transform modern-blobs">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-500/15 rounded-full blur-2xl" />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/15 rounded-full blur-2xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-2xl" />
+      {/* Compact breaking news bar */}
+      <div className="bg-slate-900 border-b border-slate-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center gap-3">
+          <span className="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1 bg-red-500 text-white text-[10px] font-black uppercase tracking-widest rounded">
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+            Live
+          </span>
+          <span className="text-slate-300 text-xs font-medium truncate">
+            Sveriges samlade drönarnyheter — uppdateras kontinuerligt
+          </span>
+          <Link
+            href="/prenumerera"
+            className="ml-auto flex-shrink-0 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors whitespace-nowrap"
+          >
+            + Prenumerera →
+          </Link>
         </div>
-
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 bg-white/10 border border-white/20 rounded-full">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-              </span>
-              <span className="text-xs font-semibold text-white/90 tracking-wide uppercase">
-                Veckans drönarnyheter direkt i inkorgen
-              </span>
-            </div>
-
-            <h1 className="text-3xl sm:text-5xl md:text-7xl font-black text-white mb-6 leading-[1.05] tracking-tight break-words hyphens-auto">
-              Allt viktigt som händer i <br />
-              <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent">
-                drönarbranschen
-              </span>
-            </h1>
-
-            <p className="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Regleringar, nya drönare, affärer och utbildning. Vi bevakar branschen så du slipper.
-              Få veckans viktigaste nyheter sammanfattat på svenska.
-            </p>
-
-            <NewsletterSignup source="homepage-hero" variant="hero" />
-
-            {subscriberCount.totalDocs > 0 && (
-              <p className="mt-8 text-sm text-white/60">
-                Gå med {subscriberCount.totalDocs.toLocaleString('sv-SE')}+ andra som redan
-                prenumererar
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
+      </div>
 
       {/* Articles section */}
       <ArticlesSection
@@ -179,22 +150,8 @@ export default async function HomePage() {
         featuredArticles={featuredArticles.docs as any[]}
         trendingArticles={trendingArticles.docs as any[]}
         categoryColors={categoryColors}
+        subscriberCount={subscriberCount.totalDocs}
       />
-
-      {/* Secondary newsletter CTA */}
-      <section className="bg-slate-50 border-y border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 tracking-tight">
-            Få veckans drönarnyheter i inkorgen
-          </h2>
-          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
-            Ett mail i veckan. Noga utvalda artiklar. Ingen spam. Avregistrera när du vill.
-          </p>
-          <div className="max-w-md mx-auto">
-            <NewsletterSignup source="homepage-secondary" variant="inline" />
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-16">
