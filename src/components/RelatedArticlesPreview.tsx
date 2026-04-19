@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { CategoryBadge } from './CategoryBadge'
 
 interface RelatedArticlesPreviewProps {
@@ -15,6 +16,30 @@ export function RelatedArticlesPreview({
   categoryColors,
 }: RelatedArticlesPreviewProps) {
   const [isVisible, setIsVisible] = useState(false)
+  const [popupStyle, setPopupStyle] = useState<React.CSSProperties>({})
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const showPopup = () => {
+    if (btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect()
+      const spaceBelow = window.innerHeight - rect.bottom
+      const spaceAbove = rect.top
+      const goUp = spaceBelow < 260 && spaceAbove > spaceBelow
+      setPopupStyle({
+        position: 'fixed',
+        left: Math.max(8, Math.min(rect.left, window.innerWidth - 316)),
+        width: Math.min(300, window.innerWidth - 16),
+        ...(goUp ? { bottom: window.innerHeight - rect.top + 4 } : { top: rect.bottom + 4 }),
+        zIndex: 9999,
+      })
+    }
+    setIsVisible(true)
+  }
 
   // Find related articles (same category or similar tags)
   const relatedArticles = React.useMemo(() => {
@@ -51,18 +76,68 @@ export function RelatedArticlesPreview({
 
   if (relatedArticles.length === 0) return null
 
+  const popup =
+    isVisible && mounted
+      ? createPortal(
+          <div
+            style={popupStyle}
+            className="bg-white rounded-2xl shadow-2xl border border-slate-200 p-4"
+            onMouseEnter={() => setIsVisible(true)}
+            onMouseLeave={() => setIsVisible(false)}
+          >
+            <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+              Relaterade artiklar
+            </div>
+            <div className="space-y-3">
+              {relatedArticles.map((related: any) => (
+                <a
+                  key={related.id}
+                  href={related.original_url || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
+                    {related.cover_url && (
+                      <img
+                        src={related.cover_url}
+                        alt={related.title}
+                        className="w-14 h-14 object-cover rounded-lg flex-shrink-0"
+                      />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="mb-1">
+                        <CategoryBadge
+                          category={related.category}
+                          categoryColors={categoryColors}
+                        />
+                      </div>
+                      <h4 className="text-xs font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-purple-700 transition-colors">
+                        {related.title}
+                      </h4>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>,
+          document.body,
+        )
+      : null
+
   return (
     <div
       className="relative border-t border-slate-100"
-      onMouseEnter={() => setIsVisible(true)}
+      onMouseEnter={showPopup}
       onMouseLeave={() => setIsVisible(false)}
     >
-      {/* Trigger button - click for touch, hover for desktop */}
       <button
+        ref={btnRef}
         onClick={(e) => {
           e.preventDefault()
           e.stopPropagation()
-          setIsVisible((v) => !v)
+          isVisible ? setIsVisible(false) : showPopup()
         }}
         className={`w-full flex items-center justify-center gap-1.5 px-4 py-2.5 text-[11px] font-semibold transition-colors ${isVisible ? 'bg-purple-50 text-purple-600' : 'text-slate-400 hover:bg-purple-50 hover:text-purple-600'}`}
       >
@@ -76,45 +151,7 @@ export function RelatedArticlesPreview({
         </svg>
         {relatedArticles.length} relaterade artiklar
       </button>
-
-      {/* Preview Card */}
-      {isVisible && (
-        <div className="absolute bottom-full left-0 right-0 z-50 w-full bg-white rounded-t-2xl shadow-2xl border border-slate-200 border-b-0 p-4">
-          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
-            Relaterade artiklar
-          </div>
-          <div className="space-y-3">
-            {relatedArticles.map((related: any) => (
-              <a
-                key={related.id}
-                href={related.original_url || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block group"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                  {related.cover_url && (
-                    <img
-                      src={related.cover_url}
-                      alt={related.title}
-                      className="w-14 h-14 object-cover rounded-lg flex-shrink-0"
-                    />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <div className="mb-1">
-                      <CategoryBadge category={related.category} categoryColors={categoryColors} />
-                    </div>
-                    <h4 className="text-xs font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-purple-700 transition-colors">
-                      {related.title}
-                    </h4>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
+      {popup}
     </div>
   )
 }
