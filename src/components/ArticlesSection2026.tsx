@@ -118,14 +118,14 @@ export function ArticlesSection({
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-white mb-2 leading-tight">
-                Missa inget �‍🗨
+                Aldrig missa en nyhet
               </h2>
-              <p className="text-white/80 text-sm md:text-base max-w-sm mb-3">
-                Veckans drönarnyheter — direkt i inkorgen. Gratis.
+              <p className="text-white/85 text-sm md:text-base max-w-sm mb-3">
+                Veckans drönarnyheter direkt i inkorgen. Gratis.
               </p>
               {subscriberCount > 0 && (
                 <p className="text-white/70 text-xs font-semibold">
-                  ⭐ {subscriberCount}+ prenumeranter
+                  {subscriberCount}+ prenumeranter
                 </p>
               )}
             </div>
