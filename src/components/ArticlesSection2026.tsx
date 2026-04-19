@@ -120,11 +120,25 @@ export function ArticlesSection({
               <h2 className="text-3xl md:text-4xl font-black text-white mb-2 leading-tight">
                 Aldrig missa en nyhet
               </h2>
-              <p className="text-white/85 text-sm md:text-base max-w-sm mb-3">
-                Veckans drönarnyheter direkt i inkorgen. Gratis.
+              <p className="text-white/85 text-sm md:text-base max-w-sm mb-4">
+                Veckans viktigaste drönarnyheter — varje fredag direkt i inkorgen.
               </p>
+              <div className="flex flex-wrap gap-3 text-xs text-white/70 font-medium">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-white/60" />
+                  Varje fredag
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-white/60" />
+                  100% gratis
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1 h-1 rounded-full bg-white/60" />
+                  Ingen spam
+                </span>
+              </div>
               {subscriberCount > 0 && (
-                <p className="text-white/70 text-xs font-semibold">
+                <p className="text-white/70 text-xs font-semibold mt-3">
                   {subscriberCount}+ prenumeranter
                 </p>
               )}
