@@ -22,7 +22,7 @@ export function RelatedArticlesPreview({
 
     const articleCategory = article.category?.toLowerCase()
     const articleTags = Array.isArray(article.tags)
-      ? article.tags.map((t: any) => String(t).toLowerCase())
+      ? article.tags.map((t: any) => String(t).toLowerCase().trim())
       : []
 
     return allArticles
@@ -30,7 +30,9 @@ export function RelatedArticlesPreview({
       .map((a: any) => {
         let score = 0
         const aCategory = a.category?.toLowerCase()
-        const aTags = Array.isArray(a.tags) ? a.tags.map((t: any) => String(t).toLowerCase()) : []
+        const aTags = Array.isArray(a.tags)
+          ? a.tags.map((t: any) => String(t).toLowerCase().trim())
+          : []
 
         // Category match
         if (aCategory === articleCategory) score += 3

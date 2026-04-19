@@ -14,7 +14,7 @@ export default async function HomePage() {
 
   const articles = await payload.find({
     collection: 'articles',
-    limit: 20,
+    limit: 100,
     sort: '-publishedAt',
     overrideAccess: true,
   })
