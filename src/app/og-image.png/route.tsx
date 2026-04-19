@@ -1,13 +1,10 @@
 import { ImageResponse } from 'next/og'
-
-export const runtime = 'edge'
+import { readFile } from 'fs/promises'
+import path from 'path'
 
 export async function GET() {
-  const logoUrl = 'https://rotorbladet.se/logo.png'
-
-  const interBold = await fetch(
-    'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFuYAZFhjA.woff2',
-  ).then((r) => r.arrayBuffer())
+  const logoData = await readFile(path.join(process.cwd(), 'public/logo.png'))
+  const logoBase64 = `data:image/png;base64,${logoData.toString('base64')}`
 
   return new ImageResponse(
     <div
@@ -37,7 +34,7 @@ export async function GET() {
       {/* Logo + name row */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '28px', marginBottom: '28px' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={logoUrl} width={96} height={96} alt="logo" style={{ borderRadius: '50%' }} />
+        <img src={logoBase64} width={96} height={96} alt="logo" style={{ borderRadius: '50%' }} />
         <span
           style={{
             fontSize: '80px',
@@ -80,7 +77,6 @@ export async function GET() {
     {
       width: 1200,
       height: 630,
-      fonts: [{ name: 'Inter', data: interBold, style: 'normal', weight: 900 }],
     },
   )
 }
