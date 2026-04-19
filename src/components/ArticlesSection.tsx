@@ -1,27 +1,84 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { CategoryBadge } from '@/components/CategoryBadge'
 import { SearchBar } from '@/components/SearchBar'
 import { RelatedArticlesPreview } from '@/components/RelatedArticlesPreview'
 import { AdminControls } from '@/components/AdminControls'
+import { RelativeTime } from '@/components/RelativeTime'
+import { ShareButton } from '@/components/ShareButton'
 import { useAdmin } from '@/hooks/useAdmin'
 
 interface ArticlesSectionProps {
   initialArticles: any[]
+  totalArticles?: number
   featuredArticles?: any[]
   trendingArticles?: any[]
   categoryColors: Record<string, string>
 }
 
+const PAGE_SIZE = 20
+
 export function ArticlesSection({
   initialArticles,
+  totalArticles = initialArticles.length,
   featuredArticles = [],
   trendingArticles = [],
   categoryColors,
 }: ArticlesSectionProps) {
+  const [allLoadedArticles, setAllLoadedArticles] = useState(initialArticles)
   const [filteredArticles, setFilteredArticles] = useState(initialArticles)
   const [resultCount, setResultCount] = useState(initialArticles.length)
+  const [loadedCount, setLoadedCount] = useState(initialArticles.length)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
+  const [activeCategory, setActiveCategory] = useState<string | null>(null)
+  const [readArticles, setReadArticles] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem('rb-read') || '[]')
+      setReadArticles(new Set(stored))
+    } catch {}
+  }, [])
+
+  const markAsRead = (id: string) => {
+    setReadArticles((prev) => {
+      const next = new Set(prev)
+      next.add(id)
+      try {
+        localStorage.setItem('rb-read', JSON.stringify([...next].slice(-200)))
+      } catch {}
+      return next
+    })
+  }
+
+  const categories = ['nyheter', 'utrustning', 'reglering', 'utbildning', 'affarer']
+  const categoryLabels: Record<string, string> = {
+    nyheter: 'Nyheter',
+    utrustning: 'Utrustning',
+    reglering: 'Reglering',
+    utbildning: 'Utbildning',
+    affarer: 'Affärer',
+  }
+
+  const loadMore = async () => {
+    setIsLoadingMore(true)
+    try {
+      const res = await fetch(
+        `/api/articles?limit=${PAGE_SIZE}&page=${Math.floor(loadedCount / PAGE_SIZE) + 1}`,
+      )
+      const data = await res.json()
+      const newArticles = [...allLoadedArticles, ...data.docs]
+      setAllLoadedArticles(newArticles)
+      setFilteredArticles(newArticles)
+      setLoadedCount(newArticles.length)
+      setResultCount(newArticles.length)
+    } catch (e) {
+      console.error('Failed to load more articles', e)
+    } finally {
+      setIsLoadingMore(false)
+    }
+  }
   const { isAdmin } = useAdmin()
 
   const trackClick = async (articleId: string) => {
@@ -140,7 +197,7 @@ export function ArticlesSection({
                 </a>
                 <RelatedArticlesPreview
                   article={article}
-                  allArticles={initialArticles}
+                  allArticles={allLoadedArticles}
                   categoryColors={categoryColors}
                 />
               </div>
@@ -203,7 +260,7 @@ export function ArticlesSection({
       )}
 
       {/* Regular Articles Section */}
-      <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-10 gap-4">
+      <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-6 gap-4">
         <div>
           <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
             Senaste nyheterna
@@ -211,7 +268,7 @@ export function ArticlesSection({
           <p className="text-slate-600 mt-2">Handplockade artiklar från hela drönarbranschen</p>
         </div>
         <SearchBar
-          articles={initialArticles}
+          articles={allLoadedArticles}
           onFilteredArticles={(articles) => {
             setFilteredArticles(articles)
             setResultCount(articles.length)
@@ -219,11 +276,51 @@ export function ArticlesSection({
         />
       </div>
 
+      {/* Category filter tabs */}
+      <div className="flex items-center gap-2 mb-8 flex-wrap">
+        <button
+          onClick={() => {
+            setActiveCategory(null)
+            setFilteredArticles(allLoadedArticles)
+            setResultCount(allLoadedArticles.length)
+          }}
+          className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+            activeCategory === null
+              ? 'bg-slate-900 text-white'
+              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+          }`}
+        >
+          Alla
+        </button>
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => {
+              const filtered =
+                activeCategory === cat
+                  ? allLoadedArticles
+                  : allLoadedArticles.filter((a: any) => a.category === cat)
+              const next = activeCategory === cat ? null : cat
+              setActiveCategory(next)
+              setFilteredArticles(filtered)
+              setResultCount(filtered.length)
+            }}
+            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+              activeCategory === cat
+                ? 'bg-slate-900 text-white'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            {categoryLabels[cat]}
+          </button>
+        ))}
+      </div>
+
       {filteredArticles.length > 0 ? (
         <>
-          {resultCount !== initialArticles.length && (
+          {resultCount !== loadedCount && (
             <div className="mb-6 text-sm text-slate-600">
-              Visar {resultCount} av {initialArticles.length} artiklar
+              Visar {resultCount} av {loadedCount} laddade artiklar
             </div>
           )}
           <div className="masonry-grid columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
@@ -266,16 +363,20 @@ export function ArticlesSection({
                   <div className="flex flex-col flex-1 p-6">
                     <div className="flex items-center gap-2 mb-3">
                       <CategoryBadge category={article.category} categoryColors={categoryColors} />
-                      {article.publishedAt && (
-                        <time className="text-xs text-slate-500 font-medium">
-                          {new Date(article.publishedAt).toLocaleDateString('sv-SE', {
-                            day: 'numeric',
-                            month: 'short',
-                          })}
-                        </time>
+                      {article.publishedAt && <RelativeTime dateString={article.publishedAt} />}
+                      {readArticles.has(article.id) && (
+                        <span className="ml-auto text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                          Läst
+                        </span>
                       )}
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2 leading-snug group-hover:text-slate-700 transition-colors">
+                    <h3
+                      className={`text-lg font-bold mb-2 leading-snug transition-colors ${
+                        readArticles.has(article.id)
+                          ? 'text-slate-400 group-hover:text-slate-500'
+                          : 'text-slate-900 group-hover:text-slate-700'
+                      }`}
+                    >
                       {article.title}
                     </h3>
                     {article.summary && (
@@ -304,14 +405,59 @@ export function ArticlesSection({
                     })()}
                   </div>
                 </a>
+                <div
+                  className="flex items-center justify-between px-4 pb-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <ShareButton url={article.original_url || ''} title={article.title} />
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault()
+                      markAsRead(article.id)
+                    }}
+                    className="text-[10px] font-semibold text-slate-400 hover:text-slate-600 px-2 py-1 rounded-full hover:bg-slate-100 transition-colors"
+                  >
+                    {readArticles.has(article.id) ? '✓ Läst' : 'Markera läst'}
+                  </button>
+                </div>
                 <RelatedArticlesPreview
                   article={article}
-                  allArticles={initialArticles}
+                  allArticles={allLoadedArticles}
                   categoryColors={categoryColors}
                 />
               </div>
             ))}
           </div>
+
+          {/* Load more button */}
+          {loadedCount < totalArticles && (
+            <div className="flex flex-col items-center gap-2 mt-12">
+              <button
+                onClick={loadMore}
+                disabled={isLoadingMore}
+                className="flex items-center gap-2 px-8 py-3 bg-slate-900 hover:bg-slate-700 disabled:bg-slate-300 text-white font-bold rounded-full transition-all shadow-lg hover:shadow-xl"
+              >
+                {isLoadingMore ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                    </svg>
+                    Laddar...
+                  </>
+                ) : (
+                  <>Ladda fler nyheter ({totalArticles - loadedCount} kvar)</>
+                )}
+              </button>
+            </div>
+          )}
         </>
       ) : (
         <div className="text-center py-20">

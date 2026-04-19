@@ -14,7 +14,7 @@ export default async function HomePage() {
 
   const articles = await payload.find({
     collection: 'articles',
-    limit: 100,
+    limit: 20,
     sort: '-publishedAt',
     overrideAccess: true,
   })
@@ -49,7 +49,6 @@ export default async function HomePage() {
     utbildning: 'from-green-500 to-emerald-500',
     nyheter: 'from-purple-500 to-pink-500',
     affarer: 'from-yellow-500 to-amber-500',
-    affärer: 'from-yellow-500 to-amber-500',
   }
 
   return (
@@ -174,6 +173,7 @@ export default async function HomePage() {
       {/* Articles section */}
       <ArticlesSection
         initialArticles={articleList}
+        totalArticles={articles.totalDocs}
         featuredArticles={featuredArticles.docs as any[]}
         trendingArticles={trendingArticles.docs as any[]}
         categoryColors={categoryColors}

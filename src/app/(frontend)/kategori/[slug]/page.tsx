@@ -10,7 +10,6 @@ const categoryLabels: Record<string, string> = {
   utbildning: 'Utbildning',
   nyheter: 'Nyheter',
   affarer: 'Affärer',
-  affärer: 'Affärer',
 }
 
 const categoryColors: Record<string, string> = {
@@ -19,7 +18,6 @@ const categoryColors: Record<string, string> = {
   utbildning: 'from-emerald-500 to-green-500',
   nyheter: 'from-purple-500 to-pink-500',
   affarer: 'from-amber-500 to-yellow-500',
-  affärer: 'from-amber-500 to-yellow-500',
 }
 
 const categoryDescriptions: Record<string, string> = {

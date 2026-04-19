@@ -133,7 +133,6 @@ export const Articles: CollectionConfig = {
         { label: 'Utbildning', value: 'utbildning' },
         { label: 'Nyheter', value: 'nyheter' },
         { label: 'Affärer', value: 'affarer' },
-        { label: 'Affärer', value: 'affärer' },
       ],
     },
     {
