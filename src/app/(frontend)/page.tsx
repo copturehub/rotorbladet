@@ -2,10 +2,9 @@ import { getPayload } from 'payload'
 import React from 'react'
 import config from '@/payload.config'
 import Link from 'next/link'
-import NewsletterSignup from '@/components/NewsletterSignup'
-import { HeroDecorations } from '@/components/HeroDecorations'
-import { ArticlesSection } from '@/components/ArticlesSection'
+import { ArticlesSection } from '@/components/ArticlesSection2026'
 import { MobileMenu } from '@/components/MobileMenu'
+import NewsletterSignup from '@/components/NewsletterSignup'
 
 export const revalidate = 0
 
