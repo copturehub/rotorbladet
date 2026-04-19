@@ -51,12 +51,12 @@ export function RelatedArticlesPreview({
 
   return (
     <div
-      className="absolute bottom-3 right-3 z-20"
+      className="relative border-t border-slate-100"
       onMouseEnter={() => setIsVisible(true)}
       onMouseLeave={() => setIsVisible(false)}
     >
       {/* Trigger button */}
-      <button className="flex items-center gap-1 px-2 py-1 text-[10px] font-semibold text-slate-400 bg-slate-100/80 backdrop-blur-sm rounded-full hover:bg-purple-100 hover:text-purple-600 transition-colors">
+      <button className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 text-[11px] font-semibold text-slate-400 hover:bg-purple-50 hover:text-purple-600 transition-colors">
         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
@@ -65,12 +65,12 @@ export function RelatedArticlesPreview({
             d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
           />
         </svg>
-        {relatedArticles.length} relaterade
+        {relatedArticles.length} relaterade artiklar
       </button>
 
       {/* Preview Card */}
       {isVisible && (
-        <div className="absolute bottom-8 right-0 z-50 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4">
+        <div className="absolute bottom-full left-0 right-0 z-50 w-full bg-white rounded-t-2xl shadow-2xl border border-slate-200 border-b-0 p-4">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
             Relaterade artiklar
           </div>

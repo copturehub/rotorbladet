@@ -242,11 +242,6 @@ export function ArticlesSection({
                     }}
                   />
                 )}
-                <RelatedArticlesPreview
-                  article={article}
-                  allArticles={initialArticles}
-                  categoryColors={categoryColors}
-                />
                 <a
                   href={article.original_url || '#'}
                   target="_blank"
@@ -304,6 +299,11 @@ export function ArticlesSection({
                     })()}
                   </div>
                 </a>
+                <RelatedArticlesPreview
+                  article={article}
+                  allArticles={initialArticles}
+                  categoryColors={categoryColors}
+                />
               </div>
             ))}
           </div>
