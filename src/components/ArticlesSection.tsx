@@ -169,6 +169,41 @@ export function ArticlesSection({
         </section>
       )}
 
+      {/* Newsletter CTA - prominent but compact */}
+      <div className="mb-8 rounded-2xl overflow-hidden border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
+        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 px-6 py-5">
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+              <svg
+                className="w-5 h-5 text-emerald-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <p className="text-white font-black text-sm leading-tight">Veckans drönarnyheter</p>
+              <p className="text-slate-400 text-xs">Direkt i inkorgen. Gratis.</p>
+            </div>
+          </div>
+          <div className="flex-1 w-full sm:w-auto">
+            <NewsletterSignup source="articles-banner" variant="inline" />
+          </div>
+          {subscriberCount > 0 && (
+            <span className="flex-shrink-0 text-[11px] text-slate-500 whitespace-nowrap hidden md:block">
+              {subscriberCount}+ läsare
+            </span>
+          )}
+        </div>
+      </div>
+
       {/* TWO COLUMN LAYOUT: articles + sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* MAIN: articles grid */}
