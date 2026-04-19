@@ -9,7 +9,11 @@ interface RelatedArticlesPreviewProps {
   categoryColors: Record<string, string>
 }
 
-export function RelatedArticlesPreview({ article, allArticles, categoryColors }: RelatedArticlesPreviewProps) {
+export function RelatedArticlesPreview({
+  article,
+  allArticles,
+  categoryColors,
+}: RelatedArticlesPreviewProps) {
   const [isVisible, setIsVisible] = useState(false)
 
   // Find related articles (same category or similar tags)
@@ -26,9 +30,7 @@ export function RelatedArticlesPreview({ article, allArticles, categoryColors }:
       .map((a: any) => {
         let score = 0
         const aCategory = a.category?.toLowerCase()
-        const aTags = Array.isArray(a.tags)
-          ? a.tags.map((t: any) => String(t).toLowerCase())
-          : []
+        const aTags = Array.isArray(a.tags) ? a.tags.map((t: any) => String(t).toLowerCase()) : []
 
         // Category match
         if (aCategory === articleCategory) score += 3
@@ -49,13 +51,26 @@ export function RelatedArticlesPreview({ article, allArticles, categoryColors }:
 
   return (
     <div
-      className="relative"
+      className="absolute bottom-3 right-3 z-20"
       onMouseEnter={() => setIsVisible(true)}
       onMouseLeave={() => setIsVisible(false)}
     >
+      {/* Trigger button */}
+      <button className="flex items-center gap-1 px-2 py-1 text-[10px] font-semibold text-slate-400 bg-slate-100/80 backdrop-blur-sm rounded-full hover:bg-purple-100 hover:text-purple-600 transition-colors">
+        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+          />
+        </svg>
+        {relatedArticles.length} relaterade
+      </button>
+
       {/* Preview Card */}
       {isVisible && (
-        <div className="absolute z-50 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 transition-all duration-300 transform scale-95 opacity-0 animate-in fade-in zoom-in duration-200">
+        <div className="absolute bottom-8 right-0 z-50 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4">
           <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
             Relaterade artiklar
           </div>
@@ -74,17 +89,14 @@ export function RelatedArticlesPreview({ article, allArticles, categoryColors }:
                     <img
                       src={related.cover_url}
                       alt={related.title}
-                      className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
+                      className="w-14 h-14 object-cover rounded-lg flex-shrink-0"
                     />
                   )}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <CategoryBadge
-                        category={related.category}
-                        categoryColors={categoryColors}
-                      />
+                    <div className="mb-1">
+                      <CategoryBadge category={related.category} categoryColors={categoryColors} />
                     </div>
-                    <h4 className="text-sm font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-purple-700 transition-colors">
+                    <h4 className="text-xs font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-purple-700 transition-colors">
                       {related.title}
                     </h4>
                   </div>

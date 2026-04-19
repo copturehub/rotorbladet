@@ -11,33 +11,36 @@ export function SearchBar({ articles, onFilteredArticles }: SearchBarProps) {
   const [query, setQuery] = useState('')
   const [isFocused, setIsFocused] = useState(false)
 
-  const filterArticles = useCallback((searchQuery: string) => {
-    if (!searchQuery.trim()) {
-      onFilteredArticles(articles)
-      return
-    }
+  const filterArticles = useCallback(
+    (searchQuery: string) => {
+      if (!searchQuery.trim()) {
+        onFilteredArticles(articles)
+        return
+      }
 
-    const lowerQuery = searchQuery.toLowerCase()
-    const filtered = articles.filter((article) => {
-      const title = article.title?.toLowerCase() || ''
-      const summary = article.summary?.toLowerCase() || ''
-      const category = article.category?.toLowerCase() || ''
-      const source = article.source?.toLowerCase() || ''
-      const tags = Array.isArray(article.tags)
-        ? article.tags.map((t: any) => t.toLowerCase?.() || String(t).toLowerCase()).join(' ')
-        : ''
+      const lowerQuery = searchQuery.toLowerCase()
+      const filtered = articles.filter((article) => {
+        const title = article.title?.toLowerCase() || ''
+        const summary = article.summary?.toLowerCase() || ''
+        const category = article.category?.toLowerCase() || ''
+        const source = article.source?.toLowerCase() || ''
+        const tags = Array.isArray(article.tags)
+          ? article.tags.map((t: any) => t.toLowerCase?.() || String(t).toLowerCase()).join(' ')
+          : ''
 
-      return (
-        title.includes(lowerQuery) ||
-        summary.includes(lowerQuery) ||
-        category.includes(lowerQuery) ||
-        source.includes(lowerQuery) ||
-        tags.includes(lowerQuery)
-      )
-    })
+        return (
+          title.includes(lowerQuery) ||
+          summary.includes(lowerQuery) ||
+          category.includes(lowerQuery) ||
+          source.includes(lowerQuery) ||
+          tags.includes(lowerQuery)
+        )
+      })
 
-    onFilteredArticles(filtered)
-  }, [articles, onFilteredArticles])
+      onFilteredArticles(filtered)
+    },
+    [articles, onFilteredArticles],
+  )
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
@@ -100,18 +103,16 @@ export function SearchBar({ articles, onFilteredArticles }: SearchBarProps) {
             className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         )}
       </div>
-      {query && (
-        <div className="mt-2 text-xs text-slate-500">
-          {onFilteredArticles.toString().includes('length') ? (
-            <span>Hittade {filterArticles.toString().length} artiklar</span>
-          ) : null}
-        </div>
-      )}
     </div>
   )
 }

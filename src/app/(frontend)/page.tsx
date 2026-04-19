@@ -59,7 +59,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <img src="/logo.png" alt="Rotorbladet" className="h-8 w-auto" />
+              <img src="/logo.png" alt="Rotorbladet" className="h-7 w-7 object-contain" />
               <span className="text-2xl font-black tracking-tight text-slate-900">Rotorbladet</span>
               <span className="hidden sm:inline px-2 py-0.5 text-[10px] font-bold text-slate-500 bg-slate-100 rounded-full uppercase tracking-wider">
                 Beta
