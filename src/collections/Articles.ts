@@ -132,7 +132,7 @@ export const Articles: CollectionConfig = {
         { label: 'Utrustning', value: 'utrustning' },
         { label: 'Utbildning', value: 'utbildning' },
         { label: 'Nyheter', value: 'nyheter' },
-        { label: 'Marknad', value: 'affarer' },
+        { label: 'Marknad', value: 'marknad' },
       ],
     },
     {

@@ -55,13 +55,13 @@ export function ArticlesSection({
     })
   }
 
-  const categories = ['nyheter', 'utrustning', 'reglering', 'utbildning', 'affarer']
+  const categories = ['nyheter', 'utrustning', 'reglering', 'utbildning', 'marknad']
   const categoryLabels: Record<string, string> = {
     nyheter: 'Nyheter',
     utrustning: 'Utrustning',
     reglering: 'Reglering',
     utbildning: 'Utbildning',
-    affarer: 'Marknad',
+    marknad: 'Marknad',
   }
 
   const loadMore = async () => {

@@ -9,7 +9,7 @@ const categoryLabels: Record<string, string> = {
   utrustning: 'Utrustning',
   utbildning: 'Utbildning',
   nyheter: 'Nyheter',
-  affarer: 'Marknad',
+  marknad: 'Marknad',
 }
 
 const categoryColors: Record<string, string> = {
@@ -17,7 +17,7 @@ const categoryColors: Record<string, string> = {
   utrustning: 'from-cyan-500 to-blue-500',
   utbildning: 'from-emerald-500 to-green-500',
   nyheter: 'from-purple-500 to-pink-500',
-  affarer: 'from-amber-500 to-yellow-500',
+  marknad: 'from-amber-500 to-yellow-500',
 }
 
 const categoryDescriptions: Record<string, string> = {
@@ -25,7 +25,7 @@ const categoryDescriptions: Record<string, string> = {
   utrustning: 'Tester, recensioner och nyheter om drönarutrustning och tillbehör.',
   utbildning: 'Kurser, certifieringar och utbildningsmaterial för drönarpiloter.',
   nyheter: 'Senaste nyheterna från drönarvärlden.',
-  affarer: 'Företagsnyheter, uppköp och marknadsanalys.',
+  marknad: 'Företagsnyheter, uppköp och marknadsanalys.',
 }
 
 export async function generateStaticParams() {
@@ -34,7 +34,7 @@ export async function generateStaticParams() {
     { slug: 'utrustning' },
     { slug: 'utbildning' },
     { slug: 'nyheter' },
-    { slug: 'affarer' },
+    { slug: 'marknad' },
   ]
 }
 
@@ -107,7 +107,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   { slug: 'utrustning', label: 'Utrustning', color: 'cyan' },
                   { slug: 'reglering', label: 'Reglering', color: 'orange' },
                   { slug: 'utbildning', label: 'Utbildning', color: 'emerald' },
-                  { slug: 'affarer', label: 'Marknad', color: 'amber' },
+                  { slug: 'marknad', label: 'Marknad', color: 'amber' },
                 ].map((cat) => {
                   const isActive = slug === cat.slug
                   const activeClasses: Record<string, string> = {

@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'utrustning',
     'reglering',
     'utbildning',
-    'affarer',
+    'marknad',
   ].map((slug) => ({
     url: `${baseUrl}/kategori/${slug}`,
     lastModified: new Date(),

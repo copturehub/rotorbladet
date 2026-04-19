@@ -21,7 +21,7 @@
   /* Category colors */
   --color-reglering: #f97316;
   --color-nyheter: #a855f7;
-  --color-affarer: #f59e0b;
+  --color-marknad: #f59e0b;
   --color-utrustning: #06b6d4;
   --color-utbildning: #10b981;
 
@@ -59,7 +59,7 @@
 
   --color-reglering: #8b1a1a;
   --color-nyheter: #1a3a5c;
-  --color-affarer: #6b4423;
+  --color-marknad: #6b4423;
   --color-utrustning: #2d5f3f;
   --color-utbildning: #5c4a3a;
 
@@ -101,7 +101,7 @@
 
   --color-reglering: #d04040;
   --color-nyheter: #00a8cc;
-  --color-affarer: #e8a030;
+  --color-marknad: #e8a030;
   --color-utrustning: #2c5282;
   --color-utbildning: #3fa860;
 
@@ -138,7 +138,7 @@
 
   --color-reglering: #ff0099;
   --color-nyheter: #00ff88;
-  --color-affarer: #ffcc00;
+  --color-marknad: #ffcc00;
   --color-utrustning: #00ccff;
   --color-utbildning: #ff6600;
 
@@ -915,7 +915,7 @@ html:not([data-theme]) .masonry-item:hover {
   border-color: #0a1a2e !important;
   transform: rotate(1.5deg);
 }
-[data-theme="tidning"] .category-badge[data-category="affarer"],
+[data-theme="tidning"] .category-badge[data-category="marknad"],
 [data-theme="tidning"] .category-badge[data-category="affärer"] {
   color: #6b4423 !important;
   border-color: #6b4423 !important;
@@ -956,7 +956,7 @@ html:not([data-theme]) .masonry-item:hover {
   color: #4dd4a0 !important;
   border-color: #4dd4a0 !important;
 }
-[data-theme="blueprint"] .category-badge[data-category="affarer"],
+[data-theme="blueprint"] .category-badge[data-category="marknad"],
 [data-theme="blueprint"] .category-badge[data-category="affärer"] {
   color: #ffb347 !important;
   border-color: #ffb347 !important;
@@ -994,7 +994,7 @@ html:not([data-theme]) .masonry-item:hover {
   background: #ffcc00 !important;
   color: #1a0033 !important;
 }
-[data-theme="wired"] .category-badge[data-category="affarer"],
+[data-theme="wired"] .category-badge[data-category="marknad"],
 [data-theme="wired"] .category-badge[data-category="affärer"] {
   background: #ff6600 !important;
   color: #ffffff !important;

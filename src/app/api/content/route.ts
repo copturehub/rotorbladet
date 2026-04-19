@@ -65,7 +65,14 @@ export async function POST(req: NextRequest) {
   }
 }
 
-type ArticleCategory = 'reglering' | 'utrustning' | 'utbildning' | 'nyheter' | 'affarer' | 'affärer'
+type ArticleCategory =
+  | 'reglering'
+  | 'utrustning'
+  | 'utbildning'
+  | 'nyheter'
+  | 'marknad'
+  | 'affarer'
+  | 'affärer'
 
 function mapArticleCategory(raw: unknown): ArticleCategory {
   const valid: ArticleCategory[] = [
@@ -73,6 +80,7 @@ function mapArticleCategory(raw: unknown): ArticleCategory {
     'utrustning',
     'utbildning',
     'nyheter',
+    'marknad',
     'affarer',
     'affärer',
   ]

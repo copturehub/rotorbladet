@@ -48,7 +48,7 @@ export default async function HomePage() {
     utrustning: 'from-blue-500 to-cyan-500',
     utbildning: 'from-green-500 to-emerald-500',
     nyheter: 'from-purple-500 to-pink-500',
-    affarer: 'from-yellow-500 to-amber-500',
+    marknad: 'from-yellow-500 to-amber-500',
   }
 
   return (
@@ -75,7 +75,7 @@ export default async function HomePage() {
                   ['utrustning', 'Utrustning'],
                   ['reglering', 'Reglering'],
                   ['utbildning', 'Utbildning'],
-                  ['affarer', 'Marknad'],
+                  ['marknad', 'Marknad'],
                 ].map(([slug, label]) => (
                   <Link
                     key={slug}
