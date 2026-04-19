@@ -138,6 +138,11 @@ export function ArticlesSection({
                     })()}
                   </div>
                 </a>
+                <RelatedArticlesPreview
+                  article={article}
+                  allArticles={initialArticles}
+                  categoryColors={categoryColors}
+                />
               </div>
             ))}
           </div>

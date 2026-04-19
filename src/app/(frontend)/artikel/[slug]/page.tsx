@@ -3,6 +3,55 @@ import React from 'react'
 import config from '@/payload.config'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
+
+const baseUrl = 'https://rotorbladet.se'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const payloadConfig = await config
+  const payload = await getPayload({ config: payloadConfig })
+
+  const articles = await payload.find({
+    collection: 'articles',
+    where: { slug: { equals: slug } },
+    limit: 1,
+    overrideAccess: true,
+  })
+
+  if (articles.docs.length === 0) return {}
+
+  const article = articles.docs[0] as any
+  const url = `${baseUrl}/artikel/${slug}`
+
+  return {
+    title: article.title,
+    description: article.summary || undefined,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'article',
+      url,
+      title: article.title,
+      description: article.summary || undefined,
+      publishedTime: article.publishedAt,
+      section: article.category,
+      tags: Array.isArray(article.tags) ? article.tags : undefined,
+      images: article.cover_url
+        ? [{ url: article.cover_url, width: 1200, height: 630, alt: article.title }]
+        : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.summary || undefined,
+      images: article.cover_url ? [article.cover_url] : undefined,
+    },
+  }
+}
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -23,10 +72,40 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     notFound()
   }
 
-  const article = articles.docs[0]
+  const article = articles.docs[0] as any
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: article.title,
+    description: article.summary || undefined,
+    datePublished: article.publishedAt,
+    dateModified: article.updatedAt,
+    url: `${baseUrl}/artikel/${article.slug}`,
+    image: article.cover_url ? [article.cover_url] : undefined,
+    articleSection: article.category,
+    keywords: Array.isArray(article.tags) ? article.tags.join(', ') : undefined,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Rotorbladet',
+      url: baseUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${baseUrl}/artikel/${article.slug}`,
+    },
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <Link href="/" className="text-blue-600 hover:underline text-sm">

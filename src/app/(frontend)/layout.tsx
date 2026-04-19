@@ -1,10 +1,62 @@
 import React from 'react'
 import '../globals.css'
 import { ThemeSwitcher } from '@/components/ThemeSwitcher'
+import type { Metadata } from 'next'
 
-export const metadata = {
-  description: 'Sveriges ledande nyhetssajt för drönarbranschen',
-  title: 'Rotorbladet.se - Drönar Nyheter',
+const baseUrl = 'https://rotorbladet.se'
+
+export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: 'Rotorbladet – Drönnyheter från Sverige och världen',
+    template: '%s | Rotorbladet',
+  },
+  description:
+    'Rotorbladet aggregerar de senaste nyheterna om drönare, UAV och drönarindustrin i Sverige och världen.',
+  keywords: ['drönare', 'UAV', 'drönnyheter', 'drönarindustrin', 'drönarteknik', 'Sverige'],
+  authors: [{ name: 'Rotorbladet', url: baseUrl }],
+  creator: 'Rotorbladet',
+  publisher: 'Rotorbladet',
+  alternates: {
+    canonical: baseUrl,
+    types: {
+      'application/rss+xml': `${baseUrl}/api/rss`,
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'sv_SE',
+    url: baseUrl,
+    siteName: 'Rotorbladet',
+    title: 'Rotorbladet – Drönnyheter från Sverige och världen',
+    description:
+      'Rotorbladet aggregerar de senaste nyheterna om drönare, UAV och drönarindustrin i Sverige och världen.',
+    images: [
+      {
+        url: `${baseUrl}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Rotorbladet – Drönnyheter',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Rotorbladet – Drönnyheter från Sverige och världen',
+    description:
+      'Rotorbladet aggregerar de senaste nyheterna om drönare, UAV och drönarindustrin i Sverige och världen.',
+    images: [`${baseUrl}/og-image.png`],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

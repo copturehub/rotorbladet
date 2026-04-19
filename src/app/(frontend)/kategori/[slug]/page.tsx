@@ -44,12 +44,28 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>
-}): Promise<{ title: string; description: string }> {
+}): Promise<import('next').Metadata> {
   const { slug } = await params
   const category = categoryLabels[slug] || slug
+  const description = categoryDescriptions[slug] || `Artiklar om ${category} på Rotorbladet.`
+  const url = `https://rotorbladet.se/kategori/${slug}`
+
   return {
-    title: `${category} | Rotorbladet`,
-    description: categoryDescriptions[slug] || `Artiklar om ${category} på Rotorbladet.`,
+    title: category,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'website',
+      url,
+      title: `${category} | Rotorbladet`,
+      description,
+      siteName: 'Rotorbladet',
+    },
+    twitter: {
+      card: 'summary',
+      title: `${category} | Rotorbladet`,
+      description,
+    },
   }
 }
 
