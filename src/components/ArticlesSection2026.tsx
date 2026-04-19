@@ -98,34 +98,42 @@ export function ArticlesSection({
       <NewsTicker articles={allLoadedArticles.slice(0, 10)} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* 2. NEWSLETTER HERO - top of content, before everything */}
-        <section className="mb-8 rounded-2xl overflow-hidden relative bg-slate-900">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
+        {/* 2. NEWSLETTER HERO */}
+        <section
+          className="mb-8 rounded-2xl overflow-hidden relative"
+          style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)' }}
+        >
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl" />
           </div>
-          <div className="relative px-6 py-8 md:px-12 md:py-10 flex flex-col md:flex-row items-center gap-8">
+          <div className="relative px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1 text-center md:text-left">
-              <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
-                  Nyhetsbrev
+                  Gratis nyhetsbrev
                 </span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">
-                Veckans drönarnyheter
-                <br />
-                <span className="text-slate-400 font-normal text-lg">direkt i inkorgen</span>
+              <h2 className="text-2xl md:text-4xl font-black text-white mb-3 leading-tight">
+                Håll dig uppdaterad 🚀
               </h2>
-              <p className="text-slate-400 text-sm max-w-sm">
-                Regleringar, nya drönare, affärer. Noga utvalda. En gång i veckan. Gratis.
+              <p className="text-slate-300 text-sm md:text-base max-w-md mb-4">
+                Veckans viktigaste drönarnyheter — regleringar, teknik, affärer. Noga utvalda.
+                Direkt i inkorgen.
               </p>
+              <div className="flex items-center gap-4 text-xs text-slate-500">
+                <span className="flex items-center gap-1">✓ Gratis</span>
+                <span className="flex items-center gap-1">✓ En gång i veckan</span>
+                <span className="flex items-center gap-1">✓ Avregistrera när du vill</span>
+              </div>
               {subscriberCount > 0 && (
-                <p className="mt-2 text-xs text-slate-500">{subscriberCount}+ prenumeranter</p>
+                <p className="mt-3 text-xs text-emerald-500 font-semibold">
+                  🙌 {subscriberCount}+ läsare prenumererar redan
+                </p>
               )}
             </div>
-            <div className="w-full md:w-96 flex-shrink-0">
+            <div className="w-full md:w-80 flex-shrink-0">
               <NewsletterSignup source="articles-hero" variant="hero" />
             </div>
           </div>
@@ -213,7 +221,7 @@ export function ArticlesSection({
                 </span>
                 <div className="flex-1 h-px bg-slate-200" />
               </div>
-              <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+              <div className="flex gap-4 overflow-x-auto pb-3 scrollbar-hide -mx-4 px-4 lg:mx-0 lg:px-0">
                 {trendList.map((article: any, i: number) => {
                   let source = article.source
                   if (!source && article.original_url) {
@@ -348,7 +356,7 @@ export function ArticlesSection({
                   return (
                     <div
                       key={article.id}
-                      className="relative group flex flex-col bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-slate-300 hover:shadow-lg transition-all duration-200 break-inside-avoid mb-5"
+                      className="relative group flex flex-col bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 break-inside-avoid mb-4"
                     >
                       {isAdmin && (
                         <AdminControls
@@ -376,7 +384,7 @@ export function ArticlesSection({
                             <img
                               src={article.cover_url}
                               alt={article.title}
-                              className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
+                              className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
                             />
                           ) : (
                             <div className="w-full h-28 flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
@@ -398,8 +406,20 @@ export function ArticlesSection({
                           {readArticles.has(article.id) && (
                             <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]" />
                           )}
+                          {/* NEW badge for articles < 6 hours old */}
+                          {article.publishedAt &&
+                            !readArticles.has(article.id) &&
+                            (() => {
+                              const ageMs = Date.now() - new Date(article.publishedAt).getTime()
+                              return ageMs < 6 * 60 * 60 * 1000 ? (
+                                <span className="absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5 bg-red-500 text-white text-[10px] font-black uppercase tracking-wider rounded-full shadow">
+                                  <span className="w-1 h-1 rounded-full bg-white animate-pulse" />
+                                  Ny
+                                </span>
+                              ) : null
+                            })()}
                         </div>
-                        <div className="flex flex-col flex-1 p-4">
+                        <div className="flex flex-col flex-1 p-3">
                           <div className="flex items-center gap-2 mb-2">
                             <CategoryBadge
                               category={article.category}

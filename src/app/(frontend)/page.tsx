@@ -54,93 +54,61 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <img src="/logo.png" alt="Rotorbladet" className="h-7 w-7 object-contain" />
-              <span className="text-2xl font-black tracking-tight text-slate-900">Rotorbladet</span>
-              <span className="hidden sm:inline px-2 py-0.5 text-[10px] font-bold text-slate-500 bg-slate-100 rounded-full uppercase tracking-wider">
+      <header className="bg-white border-b border-slate-100 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="relative">
+                <img src="/logo.png" alt="Rotorbladet" className="h-7 w-7 object-contain" />
+              </div>
+              <span className="text-xl font-black tracking-tight text-slate-900 group-hover:text-red-600 transition-colors">
+                Rotorbladet
+              </span>
+              <span className="hidden sm:inline px-1.5 py-0.5 text-[9px] font-black text-red-500 bg-red-50 rounded uppercase tracking-widest border border-red-200">
                 Beta
               </span>
             </Link>
-            <nav className="flex items-center gap-2 sm:gap-4">
-              {/* Categories - visible on larger screens */}
-              <div className="hidden lg:flex items-center gap-1 mr-2">
-                <Link
-                  href="/kategori/nyheter"
-                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-purple-600 hover:bg-purple-50 rounded-full transition-colors"
-                >
-                  Nyheter
-                </Link>
-                <Link
-                  href="/kategori/utrustning"
-                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-cyan-600 hover:bg-cyan-50 rounded-full transition-colors"
-                >
-                  Utrustning
-                </Link>
-                <Link
-                  href="/kategori/reglering"
-                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-orange-600 hover:bg-orange-50 rounded-full transition-colors"
-                >
-                  Reglering
-                </Link>
-                <Link
-                  href="/kategori/utbildning"
-                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-full transition-colors"
-                >
-                  Utbildning
-                </Link>
-                <Link
-                  href="/kategori/affarer"
-                  className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-amber-600 hover:bg-amber-50 rounded-full transition-colors"
-                >
-                  Affärer
-                </Link>
+            <nav className="flex items-center gap-1">
+              <div className="hidden lg:flex items-center gap-0.5 mr-3 border-r border-slate-100 pr-3">
+                {[
+                  ['nyheter', 'Nyheter'],
+                  ['utrustning', 'Utrustning'],
+                  ['reglering', 'Reglering'],
+                  ['utbildning', 'Utbildning'],
+                  ['affarer', 'Affärer'],
+                ].map(([slug, label]) => (
+                  <Link
+                    key={slug}
+                    href={`/kategori/${slug}`}
+                    className="px-2.5 py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
+                  >
+                    {label}
+                  </Link>
+                ))}
               </div>
-
               <Link
                 href="/verktyg"
-                className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors"
+                className="hidden sm:inline-flex px-2.5 py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
               >
                 Verktyg
               </Link>
               <Link
-                href="/prenumerera"
-                className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors"
-              >
-                Prenumerera
-              </Link>
-              <Link
                 href="/admin"
-                className="hidden sm:inline-flex px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 transition-colors"
+                className="hidden sm:inline-flex px-2.5 py-1.5 text-xs font-semibold text-slate-400 hover:text-slate-700 hover:bg-slate-50 rounded-lg transition-colors"
               >
                 Admin
+              </Link>
+              <Link
+                href="/prenumerera"
+                className="ml-2 hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-700 text-white text-xs font-bold rounded-full transition-colors"
+              >
+                ✉ Prenumerera
               </Link>
               <MobileMenu />
             </nav>
           </div>
         </div>
       </header>
-
-      {/* Compact breaking news bar */}
-      <div className="bg-slate-900 border-b border-slate-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center gap-3">
-          <span className="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1 bg-red-500 text-white text-[10px] font-black uppercase tracking-widest rounded">
-            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            Live
-          </span>
-          <span className="text-slate-300 text-xs font-medium truncate">
-            Sveriges samlade drönarnyheter — uppdateras kontinuerligt
-          </span>
-          <Link
-            href="/prenumerera"
-            className="ml-auto flex-shrink-0 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors whitespace-nowrap"
-          >
-            + Prenumerera →
-          </Link>
-        </div>
-      </div>
 
       {/* Articles section */}
       <ArticlesSection
@@ -152,67 +120,40 @@ export default async function HomePage() {
         subscriberCount={subscriberCount.totalDocs}
       />
 
-      {/* Footer */}
-      <footer className="bg-slate-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div>
-              <h3 className="text-2xl font-black mb-2">Rotorbladet</h3>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                Sveriges ledande nyhetssajt för drönarbranschen. Aggregerade nyheter från hela
-                världen.
-              </p>
+      {/* Footer - compact */}
+      <footer className="bg-slate-950 border-t border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <span className="text-white font-black text-sm">Rotorbladet</span>
+              <span className="text-slate-600 text-xs">Sveriges drönarnyheter</span>
             </div>
-            <div>
-              <h4 className="text-sm font-bold mb-4 uppercase tracking-wider text-slate-300">
-                Länkar
-              </h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="/" className="text-slate-400 hover:text-white transition-colors">
-                    Startsida
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/prenumerera"
-                    className="text-slate-400 hover:text-white transition-colors"
-                  >
-                    Prenumerera
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/admin" className="text-slate-400 hover:text-white transition-colors">
-                    Admin
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    href="/api/rss"
-                    className="text-slate-400 hover:text-orange-400 transition-colors flex items-center gap-1.5"
-                  >
-                    <svg
-                      className="w-3.5 h-3.5 text-orange-500"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M6.18 15.64a2.18 2.18 0 010 4.36 2.18 2.18 0 010-4.36M4 4.44A15.56 15.56 0 0119.56 20h-2.83A12.73 12.73 0 004 7.27V4.44m0 5.66a9.9 9.9 0 019.9 9.9h-2.83A7.07 7.07 0 004 12.93V10.1z" />
-                    </svg>
-                    RSS-feed
-                  </a>
-                </li>
-              </ul>
+            <div className="flex items-center gap-4 text-xs text-slate-500">
+              <Link href="/" className="hover:text-white transition-colors">
+                Startsida
+              </Link>
+              <Link href="/prenumerera" className="hover:text-white transition-colors">
+                Prenumerera
+              </Link>
+              <Link href="/verktyg" className="hover:text-white transition-colors">
+                Verktyg
+              </Link>
+              <a
+                href="/api/rss"
+                className="hover:text-orange-400 transition-colors flex items-center gap-1"
+              >
+                <svg className="w-3 h-3 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6.18 15.64a2.18 2.18 0 010 4.36 2.18 2.18 0 010-4.36M4 4.44A15.56 15.56 0 0119.56 20h-2.83A12.73 12.73 0 004 7.27V4.44m0 5.66a9.9 9.9 0 019.9 9.9h-2.83A7.07 7.07 0 004 12.93V10.1z" />
+                </svg>
+                RSS
+              </a>
+              <Link href="/admin" className="hover:text-white transition-colors">
+                Admin
+              </Link>
             </div>
-            <div>
-              <h4 className="text-sm font-bold mb-4 uppercase tracking-wider text-slate-300">
-                Nyhetsbrev
-              </h4>
-              <p className="text-slate-400 text-sm mb-4">Prenumerera på veckobrevet</p>
-              <NewsletterSignup source="footer" variant="footer" />
-            </div>
-          </div>
-          <div className="mt-12 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
-            © {new Date().getFullYear()} Rotorbladet.se · Alla rättigheter reserverade
+            <span className="text-slate-600 text-xs">
+              © {new Date().getFullYear()} Rotorbladet.se
+            </span>
           </div>
         </div>
       </footer>
