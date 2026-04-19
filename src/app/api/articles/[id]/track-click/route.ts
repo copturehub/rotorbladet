@@ -2,14 +2,11 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const payloadConfig = await config
     const payload = await getPayload({ config: payloadConfig })
-    const { id } = params
+    const { id } = await params
 
     // Get current article
     const article = await payload.findByID({
@@ -39,9 +36,6 @@ export async function POST(
     })
   } catch (error) {
     console.error('Error tracking click:', error)
-    return NextResponse.json(
-      { error: 'Failed to track click' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to track click' }, { status: 500 })
   }
 }
