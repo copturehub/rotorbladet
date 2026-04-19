@@ -75,7 +75,7 @@ export default async function HomePage() {
                   ['utrustning', 'Utrustning'],
                   ['reglering', 'Reglering'],
                   ['utbildning', 'Utbildning'],
-                  ['affarer', 'Affärer'],
+                  ['affarer', 'Marknad'],
                 ].map(([slug, label]) => (
                   <Link
                     key={slug}

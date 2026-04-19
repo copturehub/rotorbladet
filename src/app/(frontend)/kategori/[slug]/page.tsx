@@ -9,7 +9,7 @@ const categoryLabels: Record<string, string> = {
   utrustning: 'Utrustning',
   utbildning: 'Utbildning',
   nyheter: 'Nyheter',
-  affarer: 'Affärer',
+  affarer: 'Marknad',
 }
 
 const categoryColors: Record<string, string> = {
@@ -107,7 +107,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   { slug: 'utrustning', label: 'Utrustning', color: 'cyan' },
                   { slug: 'reglering', label: 'Reglering', color: 'orange' },
                   { slug: 'utbildning', label: 'Utbildning', color: 'emerald' },
-                  { slug: 'affarer', label: 'Affärer', color: 'amber' },
+                  { slug: 'affarer', label: 'Marknad', color: 'amber' },
                 ].map((cat) => {
                   const isActive = slug === cat.slug
                   const activeClasses: Record<string, string> = {

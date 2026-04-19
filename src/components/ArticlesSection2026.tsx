@@ -79,7 +79,7 @@ export function ArticlesSection({
     utrustning: 'Utrustning',
     reglering: 'Reglering',
     utbildning: 'Utbildning',
-    affarer: 'Affärer',
+    affarer: 'Marknad',
   }
 
   const loadMore = async () => {
