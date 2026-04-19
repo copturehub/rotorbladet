@@ -47,8 +47,8 @@ export default function NewsletterSignup({
 
   if (variant === 'hero') {
     return (
-      <form onSubmit={handleSubmit} className="w-full max-w-xl mx-auto">
-        <div className="flex flex-col sm:flex-row gap-3 p-2 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl">
+      <form onSubmit={handleSubmit} className="w-full">
+        <div className="flex gap-2">
           <input
             type="email"
             required
@@ -56,28 +56,26 @@ export default function NewsletterSignup({
             onChange={(e) => setEmail(e.target.value)}
             placeholder="din@email.se"
             disabled={status === 'loading'}
-            className="flex-1 px-5 py-4 bg-white rounded-xl text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-white/50 text-base font-medium"
+            className="flex-1 min-w-0 px-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400/50 text-sm backdrop-blur-sm"
           />
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="px-8 py-4 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-900 rounded-xl font-bold transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shadow-lg"
+            className="flex-shrink-0 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold text-sm transition-all disabled:opacity-50 whitespace-nowrap shadow-lg"
           >
-            {status === 'loading' ? 'Skickar...' : 'Prenumerera gratis'}
+            {status === 'loading' ? 'Skickar...' : 'Prenumerera'}
           </button>
         </div>
         {message && (
           <p
-            className={`mt-4 text-sm font-medium text-center ${
-              status === 'success' ? 'text-emerald-300' : 'text-red-300'
+            className={`mt-2 text-xs font-medium ${
+              status === 'success' ? 'text-emerald-400' : 'text-red-400'
             }`}
           >
             {message}
           </p>
         )}
-        <p className="mt-4 text-xs text-center text-white/60">
-          Kostnadsfritt. Avregistrera när du vill. Ingen spam.
-        </p>
+        <p className="mt-2 text-xs text-white/40">Kostnadsfritt. Avregistrera när du vill.</p>
       </form>
     )
   }
