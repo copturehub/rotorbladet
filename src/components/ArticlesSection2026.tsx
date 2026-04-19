@@ -371,7 +371,7 @@ export function ArticlesSection({
           {filteredArticles.length > 0 ? (
             <>
               <div className="columns-1 sm:columns-2 lg:columns-3 gap-5">
-                {filteredArticles.map((article: any) => {
+                {filteredArticles.map((article: any, idx: number) => {
                   let source = article.source
                   if (!source && article.original_url) {
                     try {
@@ -408,7 +408,12 @@ export function ArticlesSection({
                       >
                         <div className="relative overflow-hidden bg-slate-100">
                           {article.cover_url ? (
-                            <div className="relative w-full h-40">
+                            <div className={`relative w-full ${
+                              idx % 7 === 0 ? 'h-64' :
+                              idx % 5 === 0 ? 'h-52' :
+                              idx % 3 === 0 ? 'h-48' :
+                              'h-40'
+                            }`}>
                               <Image
                                 src={article.cover_url}
                                 alt={article.title}
