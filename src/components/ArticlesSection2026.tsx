@@ -98,7 +98,6 @@ export function ArticlesSection({
       <NewsTicker articles={allLoadedArticles.slice(0, 10)} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
         {/* 2. NEWSLETTER HERO - top of content, before everything */}
         <section className="mb-8 rounded-2xl overflow-hidden relative bg-slate-900">
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
@@ -110,7 +109,9 @@ export function ArticlesSection({
             <div className="flex-1 text-center md:text-left">
               <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Nyhetsbrev</span>
+                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                  Nyhetsbrev
+                </span>
               </div>
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2 leading-tight">
                 Veckans drönarnyheter
@@ -134,28 +135,65 @@ export function ArticlesSection({
         {featuredArticles.length > 0 && (
           <section className="mb-8">
             <div className="flex items-center gap-3 mb-5">
-              <span className="text-xs font-black uppercase tracking-widest text-slate-400">Utvalda</span>
+              <span className="text-xs font-black uppercase tracking-widest text-slate-400">
+                Utvalda
+              </span>
               <div className="flex-1 h-px bg-slate-200" />
             </div>
             {featuredArticles.length === 1 ? (
-              <FeaturedHeroCard article={featuredArticles[0]} categoryColors={categoryColors} trackClick={trackClick} isAdmin={isAdmin} allArticles={allLoadedArticles} tall />
+              <FeaturedHeroCard
+                article={featuredArticles[0]}
+                categoryColors={categoryColors}
+                trackClick={trackClick}
+                isAdmin={isAdmin}
+                allArticles={allLoadedArticles}
+                tall
+              />
             ) : featuredArticles.length === 2 ? (
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div className="md:col-span-3">
-                  <FeaturedHeroCard article={featuredArticles[0]} categoryColors={categoryColors} trackClick={trackClick} isAdmin={isAdmin} allArticles={allLoadedArticles} tall />
+                  <FeaturedHeroCard
+                    article={featuredArticles[0]}
+                    categoryColors={categoryColors}
+                    trackClick={trackClick}
+                    isAdmin={isAdmin}
+                    allArticles={allLoadedArticles}
+                    tall
+                  />
                 </div>
                 <div className="md:col-span-2">
-                  <FeaturedHeroCard article={featuredArticles[1]} categoryColors={categoryColors} trackClick={trackClick} isAdmin={isAdmin} allArticles={allLoadedArticles} tall />
+                  <FeaturedHeroCard
+                    article={featuredArticles[1]}
+                    categoryColors={categoryColors}
+                    trackClick={trackClick}
+                    isAdmin={isAdmin}
+                    allArticles={allLoadedArticles}
+                    tall
+                  />
                 </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div className="md:col-span-3">
-                  <FeaturedHeroCard article={featuredArticles[0]} categoryColors={categoryColors} trackClick={trackClick} isAdmin={isAdmin} allArticles={allLoadedArticles} tall />
+                  <FeaturedHeroCard
+                    article={featuredArticles[0]}
+                    categoryColors={categoryColors}
+                    trackClick={trackClick}
+                    isAdmin={isAdmin}
+                    allArticles={allLoadedArticles}
+                    tall
+                  />
                 </div>
                 <div className="md:col-span-2 flex flex-col gap-4">
                   {featuredArticles.slice(1, 3).map((article: any) => (
-                    <FeaturedHeroCard key={article.id} article={article} categoryColors={categoryColors} trackClick={trackClick} isAdmin={isAdmin} allArticles={allLoadedArticles} />
+                    <FeaturedHeroCard
+                      key={article.id}
+                      article={article}
+                      categoryColors={categoryColors}
+                      trackClick={trackClick}
+                      isAdmin={isAdmin}
+                      allArticles={allLoadedArticles}
+                    />
                   ))}
                 </div>
               </div>
@@ -163,20 +201,27 @@ export function ArticlesSection({
           </section>
         )}
 
-        {/* 4. TRENDING - horizontal numbered strip (uses recent articles as fallback) */}
+        {/* 4. TRENDING - horizontal scroll image cards */}
         {(() => {
-          const trendList = trendingArticles.length >= 3 ? trendingArticles : allLoadedArticles.slice(0, 5)
+          const trendList =
+            trendingArticles.length >= 3 ? trendingArticles : allLoadedArticles.slice(0, 6)
           return trendList.length > 0 ? (
             <section className="mb-8">
               <div className="flex items-center gap-3 mb-4">
-                <span className="text-xs font-black uppercase tracking-widest text-slate-400">🔥 Hett just nu</span>
+                <span className="text-xs font-black uppercase tracking-widest text-slate-400">
+                  🔥 Hett just nu
+                </span>
                 <div className="flex-1 h-px bg-slate-200" />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
                 {trendList.map((article: any, i: number) => {
                   let source = article.source
                   if (!source && article.original_url) {
-                    try { source = new URL(article.original_url).hostname.replace(/^www\./, '') } catch { source = null }
+                    try {
+                      source = new URL(article.original_url).hostname.replace(/^www\./, '')
+                    } catch {
+                      source = null
+                    }
                   }
                   return (
                     <a
@@ -185,20 +230,42 @@ export function ArticlesSection({
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => trackClick(article.id)}
-                      className="group flex gap-3 p-3 rounded-xl border border-slate-100 hover:border-slate-300 hover:shadow-md bg-white transition-all"
+                      className="group relative flex-shrink-0 w-52 h-64 rounded-2xl overflow-hidden bg-slate-800 block"
                     >
-                      <span className={`flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg text-xs font-black ${
-                        i === 0 ? 'bg-amber-400 text-white' :
-                        i === 1 ? 'bg-slate-300 text-slate-700' :
-                        i === 2 ? 'bg-orange-300 text-orange-800' :
-                        'bg-slate-100 text-slate-500'
-                      }`}>{i + 1}</span>
-                      <div className="min-w-0">
-                        <CategoryBadge category={article.category} categoryColors={categoryColors} />
-                        <p className="text-xs font-semibold text-slate-800 group-hover:text-slate-600 line-clamp-2 mt-1 leading-snug">
+                      {article.cover_url ? (
+                        <img
+                          src={article.cover_url}
+                          alt={article.title}
+                          className="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      <div className="absolute top-3 left-3">
+                        <span
+                          className={`w-8 h-8 flex items-center justify-center rounded-xl text-sm font-black shadow-lg ${
+                            i === 0
+                              ? 'bg-amber-400 text-white'
+                              : i === 1
+                                ? 'bg-slate-200 text-slate-700'
+                                : i === 2
+                                  ? 'bg-orange-400 text-white'
+                                  : 'bg-white/20 text-white backdrop-blur-sm'
+                          }`}
+                        >
+                          {i + 1}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 p-3">
+                        <CategoryBadge
+                          category={article.category}
+                          categoryColors={categoryColors}
+                        />
+                        <p className="text-white text-sm font-bold mt-1.5 leading-snug line-clamp-3">
                           {article.title}
                         </p>
-                        {source && <p className="text-[10px] text-slate-400 mt-1">{source}</p>}
+                        {source && <p className="text-white/50 text-[10px] mt-1">{source}</p>}
                       </div>
                     </a>
                   )
@@ -229,7 +296,9 @@ export function ArticlesSection({
                 setResultCount(allLoadedArticles.length)
               }}
               className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold transition-all ${
-                activeCategory === null ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                activeCategory === null
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
               Alla
@@ -238,14 +307,19 @@ export function ArticlesSection({
               <button
                 key={cat}
                 onClick={() => {
-                  const filtered = activeCategory === cat ? allLoadedArticles : allLoadedArticles.filter((a: any) => a.category === cat)
+                  const filtered =
+                    activeCategory === cat
+                      ? allLoadedArticles
+                      : allLoadedArticles.filter((a: any) => a.category === cat)
                   const next = activeCategory === cat ? null : cat
                   setActiveCategory(next)
                   setFilteredArticles(filtered)
                   setResultCount(filtered.length)
                 }}
                 className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-semibold transition-all ${
-                  activeCategory === cat ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  activeCategory === cat
+                    ? 'bg-slate-900 text-white'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
                 {categoryLabels[cat]}
@@ -254,7 +328,9 @@ export function ArticlesSection({
           </div>
 
           {resultCount !== loadedCount && (
-            <p className="text-xs text-slate-500 mb-4">Visar {resultCount} av {loadedCount} artiklar</p>
+            <p className="text-xs text-slate-500 mb-4">
+              Visar {resultCount} av {loadedCount} artiklar
+            </p>
           )}
 
           {filteredArticles.length > 0 ? (
@@ -263,7 +339,11 @@ export function ArticlesSection({
                 {filteredArticles.map((article: any) => {
                   let source = article.source
                   if (!source && article.original_url) {
-                    try { source = new URL(article.original_url).hostname.replace(/^www\./, '') } catch { source = null }
+                    try {
+                      source = new URL(article.original_url).hostname.replace(/^www\./, '')
+                    } catch {
+                      source = null
+                    }
                   }
                   return (
                     <div
@@ -276,7 +356,9 @@ export function ArticlesSection({
                           isFeatured={article.featured || false}
                           onFeaturedToggle={() => window.location.reload()}
                           onDelete={() => window.location.reload()}
-                          onEdit={() => { window.location.href = `/admin/collections/articles/${article.id}` }}
+                          onEdit={() => {
+                            window.location.href = `/admin/collections/articles/${article.id}`
+                          }}
                         />
                       )}
                       <a
@@ -284,7 +366,10 @@ export function ArticlesSection({
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex flex-col flex-1"
-                        onClick={() => { trackClick(article.id); markAsRead(article.id) }}
+                        onClick={() => {
+                          trackClick(article.id)
+                          markAsRead(article.id)
+                        }}
                       >
                         <div className="relative overflow-hidden bg-slate-100">
                           {article.cover_url ? (
@@ -295,8 +380,18 @@ export function ArticlesSection({
                             />
                           ) : (
                             <div className="w-full h-28 flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-                              <svg className="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                              <svg
+                                className="w-8 h-8 text-slate-300"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={1.5}
+                                  d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                                />
                               </svg>
                             </div>
                           )}
@@ -306,15 +401,26 @@ export function ArticlesSection({
                         </div>
                         <div className="flex flex-col flex-1 p-4">
                           <div className="flex items-center gap-2 mb-2">
-                            <CategoryBadge category={article.category} categoryColors={categoryColors} />
-                            {article.publishedAt && <RelativeTime dateString={article.publishedAt} />}
+                            <CategoryBadge
+                              category={article.category}
+                              categoryColors={categoryColors}
+                            />
+                            {article.publishedAt && (
+                              <RelativeTime dateString={article.publishedAt} />
+                            )}
                             {readArticles.has(article.id) && (
-                              <span className="ml-auto text-[10px] font-semibold text-slate-400 uppercase tracking-wider">✓ Läst</span>
+                              <span className="ml-auto text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                                ✓ Läst
+                              </span>
                             )}
                           </div>
-                          <h3 className={`text-base font-bold mb-2 leading-snug transition-colors ${
-                            readArticles.has(article.id) ? 'text-slate-400' : 'text-slate-900 group-hover:text-slate-700'
-                          }`}>
+                          <h3
+                            className={`text-base font-bold mb-2 leading-snug transition-colors ${
+                              readArticles.has(article.id)
+                                ? 'text-slate-400'
+                                : 'text-slate-900 group-hover:text-slate-700'
+                            }`}
+                          >
                             {article.title}
                           </h3>
                           {article.summary && (
@@ -325,14 +431,23 @@ export function ArticlesSection({
                           {source && (
                             <div className="flex items-center gap-2 text-xs text-slate-400 pt-3 mt-auto border-t border-slate-100">
                               <span className="font-medium">{source}</span>
-                              <span className="ml-auto text-slate-400 group-hover:text-slate-700 transition-colors font-semibold">Läs mer →</span>
+                              <span className="ml-auto text-slate-400 group-hover:text-slate-700 transition-colors font-semibold">
+                                Läs mer →
+                              </span>
                             </div>
                           )}
                         </div>
                       </a>
-                      <div className="flex items-center justify-between px-4 pb-3" onClick={(e) => e.stopPropagation()}>
+                      <div
+                        className="flex items-center justify-between px-4 pb-3"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <ShareButton url={article.original_url || ''} title={article.title} />
-                        <RelatedArticlesPreview article={article} allArticles={allLoadedArticles} categoryColors={categoryColors} />
+                        <RelatedArticlesPreview
+                          article={article}
+                          allArticles={allLoadedArticles}
+                          categoryColors={categoryColors}
+                        />
                       </div>
                     </div>
                   )
@@ -349,8 +464,19 @@ export function ArticlesSection({
                     {isLoadingMore ? (
                       <>
                         <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v8z"
+                          />
                         </svg>
                         Laddar...
                       </>
@@ -364,7 +490,9 @@ export function ArticlesSection({
           ) : (
             <div className="text-center py-16">
               <p className="text-slate-500">
-                {resultCount === 0 ? 'Inga artiklar matchade din sökning.' : 'Inga artiklar publicerade än.'}
+                {resultCount === 0
+                  ? 'Inga artiklar matchade din sökning.'
+                  : 'Inga artiklar publicerade än.'}
               </p>
             </div>
           )}
@@ -391,20 +519,28 @@ function FeaturedHeroCard({
 }) {
   let source = article.source
   if (!source && article.original_url) {
-    try { source = new URL(article.original_url).hostname.replace(/^www\./, '') } catch { source = null }
+    try {
+      source = new URL(article.original_url).hostname.replace(/^www\./, '')
+    } catch {
+      source = null
+    }
   }
 
   return (
-    <div className={`group relative overflow-hidden rounded-2xl bg-slate-900 ${
-      tall ? 'h-[360px] md:h-[440px]' : 'h-[195px]'
-    }`}>
+    <div
+      className={`group relative overflow-hidden rounded-2xl bg-slate-900 ${
+        tall ? 'h-[360px] md:h-[440px]' : 'h-[195px]'
+      }`}
+    >
       {isAdmin && (
         <AdminControls
           articleId={article.id}
           isFeatured={article.featured || false}
           onFeaturedToggle={() => window.location.reload()}
           onDelete={() => window.location.reload()}
-          onEdit={() => { window.location.href = `/admin/collections/articles/${article.id}` }}
+          onEdit={() => {
+            window.location.href = `/admin/collections/articles/${article.id}`
+          }}
         />
       )}
       {article.cover_url && (
@@ -426,18 +562,25 @@ function FeaturedHeroCard({
           <CategoryBadge category={article.category} categoryColors={categoryColors} />
           {article.publishedAt && (
             <span className="text-[11px] text-white/60 font-medium">
-              {new Date(article.publishedAt).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })}
+              {new Date(article.publishedAt).toLocaleDateString('sv-SE', {
+                day: 'numeric',
+                month: 'short',
+              })}
             </span>
           )}
           {source && <span className="ml-auto text-[11px] text-white/50">{source}</span>}
         </div>
-        <h3 className={`font-black text-white leading-snug group-hover:text-white/90 transition-colors ${
-          tall ? 'text-xl md:text-2xl' : 'text-base md:text-lg'
-        }`}>
+        <h3
+          className={`font-black text-white leading-snug group-hover:text-white/90 transition-colors ${
+            tall ? 'text-xl md:text-2xl' : 'text-base md:text-lg'
+          }`}
+        >
           {article.title}
         </h3>
         {tall && article.summary && (
-          <p className="text-white/70 text-sm mt-2 line-clamp-2 leading-relaxed">{article.summary}</p>
+          <p className="text-white/70 text-sm mt-2 line-clamp-2 leading-relaxed">
+            {article.summary}
+          </p>
         )}
       </a>
     </div>
