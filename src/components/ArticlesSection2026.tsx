@@ -107,7 +107,7 @@ export function ArticlesSection({
             <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl" />
           </div>
-          <div className="relative px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row items-center gap-8">
+          <div className="relative px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row items-center gap-6">
             <div className="flex-1 text-center md:text-left">
               <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -133,7 +133,7 @@ export function ArticlesSection({
                 </p>
               )}
             </div>
-            <div className="w-full md:w-80 flex-shrink-0">
+            <div className="w-full md:w-72 flex-shrink-0 min-w-0">
               <NewsletterSignup source="articles-hero" variant="hero" />
             </div>
           </div>

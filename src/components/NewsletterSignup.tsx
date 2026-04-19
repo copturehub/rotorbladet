@@ -48,7 +48,7 @@ export default function NewsletterSignup({
   if (variant === 'hero') {
     return (
       <form onSubmit={handleSubmit} className="w-full">
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full overflow-hidden">
           <input
             type="email"
             required
@@ -56,14 +56,14 @@ export default function NewsletterSignup({
             onChange={(e) => setEmail(e.target.value)}
             placeholder="din@email.se"
             disabled={status === 'loading'}
-            className="flex-1 min-w-0 px-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400/50 text-sm backdrop-blur-sm"
+            className="flex-1 min-w-0 w-0 px-3 py-2.5 bg-white/10 border border-white/20 rounded-xl text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/50 text-sm backdrop-blur-sm"
           />
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="flex-shrink-0 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold text-sm transition-all disabled:opacity-50 whitespace-nowrap shadow-lg"
+            className="flex-shrink-0 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold text-sm transition-all disabled:opacity-50 whitespace-nowrap"
           >
-            {status === 'loading' ? 'Skickar...' : 'Prenumerera'}
+            {status === 'loading' ? '...' : 'Skicka'}
           </button>
         </div>
         {message && (
