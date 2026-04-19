@@ -57,8 +57,15 @@ export function RelatedArticlesPreview({
       onMouseEnter={() => setIsVisible(true)}
       onMouseLeave={() => setIsVisible(false)}
     >
-      {/* Trigger button */}
-      <button className="w-full flex items-center justify-center gap-1.5 px-4 py-2.5 text-[11px] font-semibold text-slate-400 hover:bg-purple-50 hover:text-purple-600 transition-colors">
+      {/* Trigger button - click for touch, hover for desktop */}
+      <button
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          setIsVisible((v) => !v)
+        }}
+        className={`w-full flex items-center justify-center gap-1.5 px-4 py-2.5 text-[11px] font-semibold transition-colors ${isVisible ? 'bg-purple-50 text-purple-600' : 'text-slate-400 hover:bg-purple-50 hover:text-purple-600'}`}
+      >
         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
