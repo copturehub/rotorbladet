@@ -1,15 +1,16 @@
 # Rotorbladet.se - Drönarnyhetssajt
 
-En nyhetsaggregator för drönarbranschen i Sverige, byggd med Next.js och Payload CMS.
+Sveriges ledande nyhetsaggregator för drönarbranschen, byggd med Next.js 15 och Payload CMS 3.
 
 ## Översikt
 
-Rotorbladet.se aggregerar drönarnyheter från Sverige och världen genom en automatiserad workflow:
-- **Raindrop.io** - Spara intressanta artiklar med ett klick
-- **Make.com** - Automation och AI-bearbetning med OpenAI
-- **Payload CMS** - Innehållshantering och API
-- **Next.js** - Modern frontend
-- **Beehiiv** - Nyhetsbrev (optional)
+Rotorbladet aggregerar drönarnyheter från Sverige och världen via en helautomatiserad pipeline:
+
+1. **Raindrop.io** — Bokmärk intressanta artiklar med ett klick (browser extension)
+2. **Make.com** — Triggar var 15:e minut, skickar till OpenAI för svensk sammanfattning + kategorisering
+3. **POST /api/articles** — Publicerar automatiskt till Payload CMS med duplicate-check
+4. **Next.js frontend** — Visar nyheter med ticker, trending, featured och artikelgrid
+5. **Resend** — Nyhetsbrev via `/prenumerera`
 
 ## Snabbstart
 
@@ -100,14 +101,23 @@ Se [MAKE_AUTOMATION.md](./MAKE_AUTOMATION.md) för detaljerad guide om hur du s�
 
 ## API Endpoints
 
-### REST API
-- **Articles:** `GET/POST /api/articles`
-- **Single Article:** `GET/PATCH/DELETE /api/articles/:id`
-- **Tags:** `GET/POST /api/tags`
-- **Media:** `GET/POST /api/media`
+### Publika
+- `GET /api/articles` — Lista artiklar (`?limit=20&page=1`)
+- `GET /api/rss` — RSS-feed
+
+### Autentiserade (kräver `x-api-key` header)
+- `POST /api/articles` — Skapa artikel (används av Make.com)
+  - Body: `{ title, summary, category, tags, original_url, source, cover_url }`
+  - Returnerar 409 om `original_url` redan finns (duplicate-skydd)
+- `POST /api/articles/[id]/track-click` — Registrera klick (trending-algoritm)
+- `POST /api/articles/[id]/toggle-featured` — Markera som utvald
+
+### Admin
+- `POST /api/subscribe` — Prenumerera på nyhetsbrev
+- `GET /api/admin/check` — Kontrollera admin-status
 
 ### GraphQL
-- **Endpoint:** `POST /api/graphql`
+- `POST /api/graphql`
 
 ## Deployment
 
@@ -129,8 +139,11 @@ Vercel triggar automatiskt en ny deploy vid push till `main`. Ingen manuell depl
 
 ### Miljövariabler i Vercel
 Sätts under Project Settings → Environment Variables:
-- `DATABASE_URL` - MongoDB Atlas connection string
-- `PAYLOAD_SECRET` - Hemlig nyckel för Payload CMS
+- `DATABASE_URL` — MongoDB Atlas connection string
+- `PAYLOAD_SECRET` — Hemlig nyckel för Payload CMS
+- `ARTICLES_API_KEY` — API-nyckel för Make.com → POST /api/articles
+- `RESEND_API_KEY` — För nyhetsbrevs-utskick
+- `NEXT_PUBLIC_SITE_URL` — `https://rotorbladet.se`
 
 ### MongoDB Atlas
 1. Skapa gratis cluster på mongodb.com/cloud/atlas
@@ -138,13 +151,37 @@ Sätts under Project Settings → Environment Variables:
 3. Whitelist IP (0.0.0.0/0 för Vercel)
 4. Kopiera connection string till `DATABASE_URL`
 
+## Frontend-funktioner (2026 UX)
+
+- Animerad nyhetsticker med senaste rubriker
+- Newsletter hero-sektion med prenumerant-räknare
+- Featured articles i hero magazine-layout
+- Trending horizontal scroll strip (baserat på klick-data)
+- 3-kolumns artikelgrid med kategorifilter
+- "NY"-badge på artiklar < 6 timmar gamla
+- Läs-status persistent i localStorage
+- Bokmärk-funktion i localStorage
+- Läsprogressbar på artikelsidor
+- Relaterade artiklar baserat på kategori
+- Delnings-knapp per artikel
+- Admin-kontroller (featured/delete/edit) för inloggade
+- Responsiv med mobilmeny
+- Next/Image för automatisk bildoptimering (WebP/AVIF)
+
+## Make.com Pipeline
+
+```
+Raindrop.io (Watch Bookmarks, var 15 min)
+  → OpenAI (GPT-4o-mini: svensk titel, summary, kategori, tags)
+  → JSON Parse
+  → POST /api/articles (x-api-key auth, 409 vid duplicate)
+```
+
 ## Nästa Steg
 
-1. ✅ Skapa ditt första admin-konto
-2. ✅ Lägg till några artiklar manuellt för att testa
-3. 📝 Sätt upp Make.com automation (se MAKE_AUTOMATION.md)
-4. 📧 Konfigurera Beehiiv för nyhetsbrev
-5. 🚀 Deploy till production
+- 📊 Analytics-dashboard för redaktören (klick, prenumeranter, kategorier)
+- � Push-notiser för nya artiklar
+- 🗺️ Förbättrade kategori-sidor med filter
 
 ## Support
 
