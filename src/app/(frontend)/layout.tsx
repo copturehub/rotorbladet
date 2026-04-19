@@ -13,7 +13,24 @@ export const metadata: Metadata = {
   },
   description:
     'Rotorbladet aggregerar de senaste nyheterna om drönare, UAV och drönarindustrin i Sverige och världen.',
-  keywords: ['drönare', 'UAV', 'drönnyheter', 'drönarindustrin', 'drönarteknik', 'Sverige'],
+  keywords: [
+    'drönare',
+    'UAV',
+    'drönnyheter',
+    'drönarindustrin',
+    'drönarteknik',
+    'Sverige',
+    'drönaregler',
+    'Transportstyrelsen',
+    'DJI',
+    'EASA',
+    'FPV',
+    'drönarpiloter',
+    'drönarlagar',
+    'drönarkamera',
+    'kommersiella drönare',
+    'drönarnyheter Sverige',
+  ],
   authors: [{ name: 'Rotorbladet', url: baseUrl }],
   creator: 'Rotorbladet',
   publisher: 'Rotorbladet',
@@ -65,6 +82,40 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="sv" data-theme="modern" suppressHydrationWarning>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              {
+                '@context': 'https://schema.org',
+                '@type': 'NewsMediaOrganization',
+                name: 'Rotorbladet',
+                url: baseUrl,
+                logo: `${baseUrl}/icon-192.png`,
+                description: 'Sveriges nyhetsbrev och nyhetsaggregator för drönarbranschen.',
+                foundingDate: '2024',
+                inLanguage: 'sv-SE',
+                publishingPrinciples: `${baseUrl}/prenumerera`,
+                sameAs: [],
+              },
+              {
+                '@context': 'https://schema.org',
+                '@type': 'WebSite',
+                name: 'Rotorbladet',
+                url: baseUrl,
+                inLanguage: 'sv-SE',
+                potentialAction: {
+                  '@type': 'SearchAction',
+                  target: {
+                    '@type': 'EntryPoint',
+                    urlTemplate: `${baseUrl}/?q={search_term_string}`,
+                  },
+                  'query-input': 'required name=search_term_string',
+                },
+              },
+            ]),
+          }}
+        />
         {/* PWA Manifest */}
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icon-192.png" />
