@@ -7,6 +7,19 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/((?!_next/static|_next/image|favicon|icon|logo|manifest|sw\\.js).*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, must-revalidate',
+          },
+        ],
+      },
+    ]
+  },
   async redirects() {
     return [
       {
