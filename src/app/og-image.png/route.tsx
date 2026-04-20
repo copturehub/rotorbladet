@@ -2,7 +2,10 @@ import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
 
-export async function GET() {
+export async function GET(req: Request) {
+  const host = new URL(req.url).origin
+  const fontData = await fetch(`${host}/inter-900.woff2`).then((r) => r.arrayBuffer())
+
   return new ImageResponse(
     <div
       style={{
@@ -13,7 +16,7 @@ export async function GET() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
+        fontFamily: 'Inter, system-ui, sans-serif',
         position: 'relative',
       }}
     >
@@ -113,6 +116,10 @@ export async function GET() {
         }}
       />
     </div>,
-    { width: 1200, height: 630 },
+    {
+      width: 1200,
+      height: 630,
+      fonts: [{ name: 'Inter', data: fontData, style: 'normal', weight: 900 }],
+    },
   )
 }
