@@ -6,6 +6,14 @@ export async function GET() {
   const logoData = await readFile(path.join(process.cwd(), 'public/logo.png'))
   const logoBase64 = `data:image/png;base64,${logoData.toString('base64')}`
 
+  const interFont = await fetch(
+    new URL(
+      'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFuYAZ5hjp-Ek-_EeA.woff2',
+    ),
+  )
+    .then((r) => r.arrayBuffer())
+    .catch(() => null)
+
   return new ImageResponse(
     <div
       style={{
@@ -16,7 +24,7 @@ export async function GET() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        fontFamily: 'Inter, sans-serif',
+        fontFamily: interFont ? 'Inter' : 'system-ui, sans-serif',
         position: 'relative',
       }}
     >
@@ -77,6 +85,7 @@ export async function GET() {
     {
       width: 1200,
       height: 630,
+      fonts: interFont ? [{ name: 'Inter', data: interFont, style: 'normal', weight: 900 }] : [],
     },
   )
 }
