@@ -1,4 +1,4 @@
-const STATIC_CACHE = 'rotorbladet-static-v1'
+const STATIC_CACHE = 'rotorbladet-static-v2'
 
 self.addEventListener('install', (event) => {
   self.skipWaiting()
