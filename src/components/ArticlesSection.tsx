@@ -68,7 +68,7 @@ export function ArticlesSection({
     setIsLoadingMore(true)
     try {
       const res = await fetch(
-        `/api/articles?limit=${PAGE_SIZE}&page=${Math.floor(loadedCount / PAGE_SIZE) + 1}`,
+        `/api/articles/load-more?limit=${PAGE_SIZE}&page=${Math.floor(loadedCount / PAGE_SIZE) + 1}`,
       )
       const data = await res.json()
       const newArticles = [...allLoadedArticles, ...data.docs]
