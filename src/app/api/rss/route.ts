@@ -26,15 +26,17 @@ export async function GET() {
           ? new Date(article.publishedAt).toUTCString()
           : new Date().toUTCString()
 
+        const url = escapeXml(article.original_url)
+
         return `
       <item>
         <title>${escapeXml(article.title)}</title>
-        <description>${escapeXml(article.summary || '')}</description>
-        <link>${article.original_url}</link>
-        <guid>${article.original_url}</guid>
+        <description><![CDATA[${article.summary || ''}]]></description>
+        <link>${url}</link>
+        <guid>${url}</guid>
         <pubDate>${pubDate}</pubDate>
         ${article.category ? `<category>${escapeXml(article.category)}</category>` : ''}
-        ${article.cover_url ? `<enclosure url="${article.cover_url}" type="image/jpeg" />` : ''}
+        ${article.cover_url ? `<enclosure url="${escapeXml(article.cover_url)}" type="image/jpeg" />` : ''}
       </item>`
       })
       .filter(Boolean)
