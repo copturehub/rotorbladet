@@ -1,33 +1,47 @@
-const CACHE_NAME = 'rotorbladet-v1'
-const urlsToCache = ['/']
+const STATIC_CACHE = 'rotorbladet-static-v1'
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
-  )
-})
-
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      if (response) {
-        return response
-      }
-      return fetch(event.request)
-    })
-  )
+  self.skipWaiting()
 })
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName)
-          }
+  event.waitUntil(self.clients.claim())
+})
+
+self.addEventListener('fetch', (event) => {
+  const { request } = event
+  const url = new URL(request.url)
+
+  // HTML pages: network first, NEVER serve stale HTML
+  if (request.mode === 'navigate' || request.destination === 'document') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => response)
+        .catch(() =>
+          caches.match(request).then((cached) => {
+            if (cached) return cached
+            return new Response('Offline', { status: 503 })
+          }),
+        ),
+    )
+    return
+  }
+
+  // Static assets (_next/static, images): cache first with background revalidate
+  if (url.pathname.startsWith('/_next/static/') || url.pathname.startsWith('/api/media/')) {
+    event.respondWith(
+      caches.match(request).then((cached) => {
+        if (cached) return cached
+        return fetch(request).then((response) => {
+          const clone = response.clone()
+          caches.open(STATIC_CACHE).then((cache) => cache.put(request, clone))
+          return response
         })
-      )
-    })
-  )
+      }),
+    )
+    return
+  }
+
+  // Everything else: network first
+  event.respondWith(fetch(request).catch(() => caches.match(request)))
 })
