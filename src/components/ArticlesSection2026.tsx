@@ -219,16 +219,18 @@ export function ArticlesSection({
                     tall
                   />
                 </div>
-                <div className="md:col-span-2 flex flex-col gap-4">
+                <div className="md:col-span-2 flex flex-col gap-4 h-full">
                   {featuredArticles.slice(1, 3).map((article: any) => (
-                    <FeaturedHeroCard
-                      key={article.id}
-                      article={article}
-                      categoryColors={categoryColors}
-                      trackClick={trackClick}
-                      isAdmin={isAdmin}
-                      allArticles={allLoadedArticles}
-                    />
+                    <div key={article.id} className="flex-1">
+                      <FeaturedHeroCard
+                        article={article}
+                        categoryColors={categoryColors}
+                        trackClick={trackClick}
+                        isAdmin={isAdmin}
+                        allArticles={allLoadedArticles}
+                        fillHeight
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -589,6 +591,16 @@ export function ArticlesSection({
   )
 }
 
+interface FeaturedHeroCardProps {
+  article: any
+  categoryColors: Record<string, string>
+  trackClick: (id: string) => void
+  isAdmin: boolean
+  allArticles: any[]
+  tall?: boolean
+  fillHeight?: boolean
+}
+
 function FeaturedHeroCard({
   article,
   categoryColors,
@@ -596,14 +608,8 @@ function FeaturedHeroCard({
   isAdmin,
   allArticles,
   tall = false,
-}: {
-  article: any
-  categoryColors: Record<string, string>
-  trackClick: (id: string) => void
-  isAdmin: boolean
-  allArticles: any[]
-  tall?: boolean
-}) {
+  fillHeight = false,
+}: FeaturedHeroCardProps) {
   let source = article.source
   if (!source && article.original_url) {
     try {
@@ -616,7 +622,7 @@ function FeaturedHeroCard({
   return (
     <div
       className={`group relative overflow-hidden rounded-2xl bg-slate-900 ${
-        tall ? 'h-[360px] md:h-[440px]' : 'h-[195px]'
+        fillHeight ? 'h-full' : tall ? 'h-[360px] md:h-[440px]' : 'h-[195px]'
       }`}
     >
       {isAdmin && (
