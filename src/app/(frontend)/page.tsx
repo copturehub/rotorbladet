@@ -19,13 +19,21 @@ export default async function HomePage() {
     overrideAccess: true,
   })
 
-  const featuredArticles = await payload.find({
+  let featuredArticles = await payload.find({
     collection: 'articles',
     where: { featured: { equals: true } },
     limit: 3,
     sort: '-publishedAt',
     overrideAccess: true,
   })
+
+  // Fallback: if no featured articles, use the 3 latest articles
+  if (featuredArticles.docs.length === 0) {
+    featuredArticles = {
+      ...featuredArticles,
+      docs: articles.docs.slice(0, 3),
+    }
+  }
 
   const trendingArticles = await payload.find({
     collection: 'articles',
@@ -41,7 +49,8 @@ export default async function HomePage() {
     overrideAccess: true,
   })
 
-  const articleList = articles.docs as any[]
+  const featuredIds = new Set(featuredArticles.docs.map((a: any) => a.id))
+  const articleList = (articles.docs as any[]).filter((a) => !featuredIds.has(a.id))
 
   const categoryColors: Record<string, string> = {
     reglering: 'from-red-500 to-orange-500',
