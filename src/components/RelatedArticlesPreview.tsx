@@ -113,7 +113,7 @@ export function RelatedArticlesPreview({
                           categoryColors={categoryColors}
                         />
                       </div>
-                      <h4 className="text-xs font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-purple-700 transition-colors">
+                      <h4 className="text-xs font-bold text-slate-900 leading-snug group-hover:text-purple-700 transition-colors line-clamp-2">
                         {related.title}
                       </h4>
                     </div>

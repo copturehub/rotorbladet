@@ -297,7 +297,7 @@ export function ArticlesSection({
                           category={article.category}
                           categoryColors={categoryColors}
                         />
-                        <p className="text-white text-sm font-bold mt-1.5 leading-snug line-clamp-3">
+                        <p className="text-white text-sm font-bold mt-1.5 leading-snug">
                           {article.title}
                         </p>
                         {source && <p className="text-white/50 text-[10px] mt-1">{source}</p>}
@@ -486,7 +486,7 @@ export function ArticlesSection({
                             {article.title}
                           </h3>
                           {article.summary && (
-                            <p className="text-slate-500 text-sm leading-relaxed mb-3 flex-1 line-clamp-3">
+                            <p className="text-slate-500 text-sm leading-relaxed mb-3 flex-1">
                               {article.summary}
                             </p>
                           )}
@@ -665,9 +665,7 @@ function FeaturedHeroCard({
           {article.title}
         </h3>
         {tall && article.summary && (
-          <p className="text-white/70 text-sm mt-2 line-clamp-2 leading-relaxed">
-            {article.summary}
-          </p>
+          <p className="text-white/70 text-sm mt-2 leading-relaxed">{article.summary}</p>
         )}
       </a>
     </div>

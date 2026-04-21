@@ -480,7 +480,7 @@ export function ArticlesSection({
                           category={article.category}
                           categoryColors={categoryColors}
                         />
-                        <p className="text-sm font-semibold text-slate-800 group-hover:text-slate-600 line-clamp-2 mt-0.5 leading-snug">
+                        <p className="text-sm font-semibold text-slate-800 group-hover:text-slate-600 mt-0.5 leading-snug">
                           {article.title}
                         </p>
                       </div>
@@ -626,9 +626,7 @@ function FeaturedHeroCard({
           {article.title}
         </h3>
         {tall && article.summary && (
-          <p className="text-white/70 text-sm mt-2 line-clamp-2 leading-relaxed">
-            {article.summary}
-          </p>
+          <p className="text-white/70 text-sm mt-2 leading-relaxed">{article.summary}</p>
         )}
       </a>
     </div>
