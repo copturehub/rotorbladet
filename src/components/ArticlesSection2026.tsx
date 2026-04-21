@@ -219,16 +219,18 @@ export function ArticlesSection({
                     tall
                   />
                 </div>
-                <div className="md:col-span-2 flex flex-col gap-4">
+                <div className="md:col-span-2 flex flex-col gap-4 h-full">
                   {featuredArticles.slice(1, 3).map((article: any) => (
-                    <FeaturedHeroCard
-                      key={article.id}
-                      article={article}
-                      categoryColors={categoryColors}
-                      trackClick={trackClick}
-                      isAdmin={isAdmin}
-                      allArticles={allLoadedArticles}
-                    />
+                    <div key={article.id} className="flex-1">
+                      <FeaturedHeroCard
+                        article={article}
+                        categoryColors={categoryColors}
+                        trackClick={trackClick}
+                        isAdmin={isAdmin}
+                        allArticles={allLoadedArticles}
+                        tall
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
